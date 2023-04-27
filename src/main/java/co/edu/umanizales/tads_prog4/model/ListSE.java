@@ -224,4 +224,36 @@ public class ListSE {
         this.head = sendBottom.getHead();
     }
 
+    public void forwardPositions(String identification, int positions){
+        if (head != null){
+            if(positions<size){
+                if(head.getData().getIdentification()==identification){
+                    //Como es la cabeza, entonces no puede subir posiciones
+                }
+                else{
+                    int count = 1;
+                    Node temp = head;
+                    while(temp.getNext().getData().getIdentification()!=identification){
+                        temp = temp.getNext();
+                        count++;
+                        if(temp.getNext()!=null){
+                            return;
+                        }
+                    }
+                    Node temp2=new Node(temp.getNext().getData());
+                    temp.setNext(temp.getNext().getNext());
+                    if(positions >= count+1){
+                        addToStart(temp2.getData());
+                    }
+                    else{
+                        addByPosition(temp2.getData(), (count+1) - positions);
+                    }
+                }
+            }
+            else{
+                return;
+            }
+        }
+    }
+
 }

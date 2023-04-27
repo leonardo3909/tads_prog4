@@ -123,4 +123,10 @@ public class ListSEController {
                 null), HttpStatus.OK);
     }
 
+    @GetMapping(path="/forwardpositions")
+    public ResponseEntity<ResponseDTO> forwardPositions(@PathVariable String identification, int positions){
+        listSEService.getKids().forwardPositions(identification, positions);
+        return new ResponseEntity<>(new ResponseDTO(200, "The kid has been moved to the position", null), HttpStatus.OK);
+    }
+
 }
