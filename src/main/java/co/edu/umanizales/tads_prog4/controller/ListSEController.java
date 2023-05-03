@@ -2,11 +2,14 @@ package co.edu.umanizales.tads_prog4.controller;
 
 import co.edu.umanizales.tads_prog4.dto.KidDTO;
 import co.edu.umanizales.tads_prog4.dto.KidsByLocationDTO;
+import co.edu.umanizales.tads_prog4.dto.RangeAgeKidsDTO;
 import co.edu.umanizales.tads_prog4.dto.ResponseDTO;
 import co.edu.umanizales.tads_prog4.model.Kid;
 import co.edu.umanizales.tads_prog4.model.Location;
+import co.edu.umanizales.tads_prog4.model.Rangesk;
 import co.edu.umanizales.tads_prog4.servive.ListSEService;
 import co.edu.umanizales.tads_prog4.servive.LocationService;
+import co.edu.umanizales.tads_prog4.servive.RangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -123,10 +126,32 @@ public class ListSEController {
                 null), HttpStatus.OK);
     }
 
+    @GetMapping(path = "/Rangeage")
+    public ResponseEntity<ResponseDTO> getRangeByKids(){
+        List<RangeAgeKidsDTO> kidsRangeDTOList = new ArrayList<>();
+
+        for (Rangesk i : rangesService.getRanges()){
+            int quantity = listSEService.getKids().rangeByAge(i.getFrom(),i.getTo());
+            kidsRangeDTOList.add(new RangeAgeKidsDTO(i,quantity));
+        }
+
+        return new ResponseEntity<>(new ResponseDTO(200,kidsRangeDTOList,null),HttpStatus.OK);
+    }
+
     @GetMapping(path="/forwardpositions")
     public ResponseEntity<ResponseDTO> forwardPositions(@PathVariable String identification, int positions){
         listSEService.getKids().forwardPositions(identification, positions);
         return new ResponseEntity<>(new ResponseDTO(200, "The kid has been moved to the position", null), HttpStatus.OK);
     }
+
+    @GetMapping(path="/afterwardspositions")
+    public ResponseEntity<ResponseDTO> afterwardsPositions(@PathVariable String identification, int positions){
+        listSEService.getKids().afterwardsPositions(identification, positions);
+        return new ResponseEntity<>(new ResponseDTO(200, "The kid has been moved to the position", null), HttpStatus.OK);
+    }
+
+
+
+
 
 }

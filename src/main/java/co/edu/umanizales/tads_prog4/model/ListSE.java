@@ -224,6 +224,20 @@ public class ListSE {
         this.head = sendBottom.getHead();
     }
 
+    public int rangeByAge(int min,int max){
+        Node temp = head;
+        int counter = 0;
+        while (temp != null){
+            if (temp.getData().getAge() >= min && temp.getData().getAge()<= max){
+                counter++;
+
+            }
+            temp = temp.getNext();
+
+        }
+        return counter;
+    }
+
     public void forwardPositions(String identification, int positions){
         if (head != null){
             if(positions<size){
@@ -245,9 +259,35 @@ public class ListSE {
                     if(positions >= count+1){
                         addToStart(temp2.getData());
                     }
-                    else{
-                        addByPosition(temp2.getData(), (count+1) - positions);
+                    else (addByPosition(temp2.getData(), (count+1) - positions));
                     }
+                }
+            }
+            else return;
+        }
+    }
+
+    public void afterwardsPositions(String identification, int positions){
+        if (head!=null){
+            if(positions<size){
+                if(head.getData().getIdentification()==identification){
+                    Node node = new Node(head.getNext().getData());
+                    addByPosition(node.getData(), positions+1);
+                    head = head.getNext();
+                }
+                else{
+                    int count = 1;
+                    Node temp = head;
+                    while(temp.getNext().getData().getIdentification()!=identification){
+                        temp = temp.getNext();
+                        count++;
+                        if(temp.getNext()!=null){
+                            return;
+                        }
+                    }
+                    Node temp2=new Node(temp.getNext().getData());
+                    temp.setNext(temp.getNext().getNext());
+                    addByPosition(temp2.getData(), count+1+positions);
                 }
             }
             else{
@@ -255,5 +295,6 @@ public class ListSE {
             }
         }
     }
-
 }
+
+
