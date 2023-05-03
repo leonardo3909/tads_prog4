@@ -4,4 +4,7 @@ import lombok.Data;
 
 @Data
 public class ErrrorDTO {
+
+    private int code;
+    private String message;
 }
