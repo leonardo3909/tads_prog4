@@ -130,10 +130,7 @@ public class ListSEController {
     public ResponseEntity<ResponseDTO> getRangeByKids(){
         List<RangeAgeKidsDTO> kidsRangeDTOList = new ArrayList<>();
 
-        for (Rangesk i : rangesService.getRanges()){
-            int quantity = listSEService.getKids().rangeByAge(i.getFrom(),i.getTo());
-            kidsRangeDTOList.add(new RangeAgeKidsDTO(i,quantity));
-        }
+
 
         return new ResponseEntity<>(new ResponseDTO(200,kidsRangeDTOList,null),HttpStatus.OK);
     }

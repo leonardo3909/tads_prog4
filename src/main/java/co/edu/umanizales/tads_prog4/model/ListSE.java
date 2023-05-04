@@ -238,33 +238,30 @@ public class ListSE {
         return counter;
     }
 
-    public void forwardPositions(String identification, int positions){
-        if (head != null){
-            if(positions<size){
-                if(head.getData().getIdentification()==identification){
+    public void forwardPositions(String identification, int positions) {
+        if (head != null) {
+            if (positions < size) {
+                if (head.getData().getIdentification() == identification) {
                     //Como es la cabeza, entonces no puede subir posiciones
-                }
-                else{
+                } else {
                     int count = 1;
                     Node temp = head;
-                    while(temp.getNext().getData().getIdentification()!=identification){
+                    while (temp.getNext().getData().getIdentification() != identification) {
                         temp = temp.getNext();
                         count++;
-                        if(temp.getNext()!=null){
+                        if (temp.getNext() != null) {
                             return;
                         }
                     }
-                    Node temp2=new Node(temp.getNext().getData());
+                    Node temp2 = new Node(temp.getNext().getData());
                     temp.setNext(temp.getNext().getNext());
-                    if(positions >= count+1){
+                    if (positions >= count + 1) {
                         addToStart(temp2.getData());
-                    }
-                    else (addByPosition(temp2.getData(), (count+1) - positions));
                     }
                 }
             }
-            else return;
         }
+        return;
     }
 
     public void afterwardsPositions(String identification, int positions){
@@ -290,10 +287,13 @@ public class ListSE {
                     addByPosition(temp2.getData(), count+1+positions);
                 }
             }
-            else{
-                return;
-            }
+            return;
+
+
         }
+    }
+
+    private void addByPosition(Kid data, int i) {
     }
 }
 
