@@ -103,19 +103,121 @@ public class ListDE {
         }
     }
 
+    public void boyStartGirlsLast() {
+        if (head != null) {
+            ListDE boysList = new ListDE();
+            ListDE girlsList = new ListDE();
+            Node temp = head;
+            while (temp != null) {
+                if (temp.getData2().getGender() == 'M') {
+                    boysList.addToStart(temp.getData2());
+                } else {
+                    girlsList.add(temp.getData2());
+                }
+                temp = temp.getNext();
+            }
+            boysList.getTail().setNext(girlsList.getHead());
+            girlsList.getHead().setPrev(boysList.getTail());
+            head = boysList.getHead();
+            tail = girlsList.getTail();
+            temp = tail;
+            while (temp != null) {
+                if (temp.getData2().getGender() == 'F') {
+                    boysList.addToStart(temp.getData2());
+                } else {
+                    girlsList.add(temp.getData2());
+                }
+                temp = temp.getNext();
+            }
+        }
+    }
 
+    public void boyThenGirl(){
+        ListDE listMale = new ListDE();
+        ListDE listFemale = new ListDE();
+        Node temp = this.head;
+        while (temp != null){
+            if(temp.getData().getGender()=='M'){
+                listMale.add(temp.getData2());
+            }
+            if(temp.getData().getGender()=='F'){
+                listFemale.add(temp.getData2());
+            }
+            temp = temp.getNext();
+        }
 
+        ListDE sortedList = new ListDE();
+        Node maleNode = listMale.getHead();
+        Node femaleNode = listFemale.getHead();
+        while (maleNode != null || femaleNode != null){
+            if (maleNode != null){
+                sortedList.add(maleNode.getData2());
+                maleNode = maleNode.getNext();
+            }
+            if (femaleNode != null){
+                sortedList.add(femaleNode.getData2());
+                femaleNode = femaleNode.getNext();
+            }
+        }
+        this.head = sortedList.getHead();
+    }
 
+    public void deleteByAge(int age) {
+        Node current = head;
+        while (current != null && current.getData().getAge() != age) {
+            current = current.getNext();
+        }
 
+        if (current != null) {
+            if (current.getPrev() == null && current.getNext() == null) {
+                // The node to delete is the only node in the list
+                head = null;
+            } else if (current.getPrev() == null) {
+                // The node to delete is the first node in the list
+                head = current.getNext();
+                current.getNext().setPrev(null);
+            } else if (current.getNext() == null) {
+                // The node to delete is the last node in the list
+                current.getPrev().setNext(null);
+            } else {
+                // The node to delete is somewhere in the middle of the list
+                current.getPrev().setNext(current.getNext());
+                current.getNext().setPrev(current.getPrev());
+            }
+        }
+    }
 
+    public float averageAge() {
+        if (this.head != null) {
+            Node temp = this.head;
+            int count = 0;
+            int ages = 0;
+            while (temp != null) {
+                count++;
+                ages += temp.getData2().getAge();
+                temp = temp.getNext();
+            }
+            return (float) ages / count;
+        } else {
+            return (float) 0;
+        }
+    }
 
+    public void sendBottomByLetter(char initial){
+        ListDE sendBottom = new ListDE();
+        ListDE sendTop = new ListDE();
+        Node temp = this.head;
 
+        while (temp != null){
+            if (temp.getData().getName().charAt(0) != Character.toUpperCase(initial)){
+                sendTop.add(temp.getData2());
+            }
+            else{
+                sendBottom.add(temp.getData2());
+            }
+            temp = temp.getNext();
+        }
 
-
-
-
-
-
-
-
+        this.head = sendTop.getHead();
+    }
 }
