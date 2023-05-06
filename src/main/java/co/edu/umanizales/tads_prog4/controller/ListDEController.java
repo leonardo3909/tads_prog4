@@ -54,9 +54,7 @@ public class ListDEController {
                     null), HttpStatus.OK);
         }
         listDEService.getPets().add(
-                new Pet(PetDTO.getIdentification(),
-                        PetDTO.getName(), PetDTO.getAge(),
-                        PetDTO.getGender(),PetDTO.getRaze,location));
+                new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getCodeLocation(),location));
         return new ResponseEntity<>(new ResponseDTO(
                 200,"Se ha adicionado la mascota",
                 null), HttpStatus.OK);
@@ -92,21 +90,21 @@ public class ListDEController {
     @GetMapping(path="/boysfirstgirlslast")
     public ResponseEntity<ResponseDTO> boyStartGirlsLast(){
         listDEService.getPets().boyStartGirlsLast();
-        return new ResponseEntity<>(new ResponseDTO(200, "Los niños salen al inicio, las niñas al final",
+        return new ResponseEntity<>(new ResponseDTO(200, "Los machos salen al inicio, las hembras al final",
                 null), HttpStatus.OK);
     }
 
     @GetMapping(path="/boythengirl")
     public ResponseEntity<ResponseDTO> boyThenGirl(){
         listDEService.getPets().boyThenGirl();
-        return new ResponseEntity<>(new ResponseDTO(200, "Los niños han sido alternados según su género",
+        return new ResponseEntity<>(new ResponseDTO(200, "Las mascotas han sido alternados según su género",
                 null), HttpStatus.OK);
     }
 
     @GetMapping(path = "/deletebyage/{age}")
     public ResponseEntity<ResponseDTO> deleteByAge(@PathVariable int age){
         listDEService.getPets().deleteByAge(age);
-        return new ResponseEntity<>(new ResponseDTO(200, "Los niños han sido eliminados",
+        return new ResponseEntity<>(new ResponseDTO(200, "Las mascotas han sido eliminados",
                 null), HttpStatus.OK);
     }
 
@@ -119,7 +117,7 @@ public class ListDEController {
     @GetMapping(path="/sendbottom/{initial}")
     public ResponseEntity<ResponseDTO> sendBottomByLetter(@PathVariable char initial){
         listDEService.getPets().sendBottomByLetter(Character.toUpperCase(initial));
-        return new ResponseEntity<>(new ResponseDTO(200, "Los niños con esa letra se han enviado al final",
+        return new ResponseEntity<>(new ResponseDTO(200, "Las mascotas con esa letra se han enviado al final",
                 null), HttpStatus.OK);
     }
 

@@ -1,5 +1,6 @@
 package co.edu.umanizales.tads_prog4.model;
 
+import co.edu.umanizales.tads_prog4.execption.ListSEExecption;
 import lombok.Data;
 
 @Data
@@ -8,12 +9,18 @@ public class ListSE {
     private Node head;
     private int size;
 
-    public void add(Kid kid){
+    public void add(Kid kid) throws ListSEExecption {
         if(head != null){
             Node temp = head;
             while(temp.getNext() !=null)
             {
+                if (temp.getData().getIdentification().equals(kid.getIdentification())){
+                    throw new ListSEExecption("ya existe en la lista este niño");
+                }
                 temp = temp.getNext();
+            }
+            if (temp.getData().getIdentification().equals(kid.getIdentification())){
+                throw new ListSEExecption("ya existe en la lista este niño");
             }
             /// Parado en el último
             Node newNode = new Node(kid);
@@ -25,7 +32,7 @@ public class ListSE {
         size ++;
     }
 
-    public void addToStart(Kid kid){
+    public void addToStart(Kid kid) throws ListSEExecption{
         if(head !=null)
         {
             Node newNode = new Node(kid);
@@ -34,11 +41,15 @@ public class ListSE {
         }
         else {
             head = new Node(kid);
+            throw new ListSEExecption("no se ha podido adicionar el niño al inicio de la lista");
         }
+
+
+
         size++;
     }
 
-    public void orderBoysToStart(){
+    public void orderBoysToStart() throws ListSEExecption{
         if(this.head !=null){
             ListSE listCp = new ListSE();
             Node temp = this.head;
@@ -55,9 +66,12 @@ public class ListSE {
             }
             this.head = listCp.getHead();
         }
+        else{
+            throw new ListSEExecption("no se ha podido ordenar la lista");
+        }
     }
 
-    public void changeExtremes(){
+    public void changeExtremes() throws ListSEExecption{
         if(this.head !=null && this.head.getNext() !=null)
         {
             Node temp = this.head;
@@ -70,10 +84,13 @@ public class ListSE {
             this.head.setData(temp.getData());
             temp.setData(copy);
         }
+        else{
+            throw new ListSEExecption("no es posible cambiar de extremos");
+        }
 
     }
 
-    public int getCountKidsByLocationCode(String code){
+    public int getCountKidsByLocationCode(String code) throws ListSEExecption{
         int count =0;
         if( this.head!=null){
             Node temp = this.head;
@@ -84,10 +101,13 @@ public class ListSE {
                 temp = temp.getNext();
             }
         }
+        else{
+            throw new ListSEExecption("no se pudo localizar al niño");
+        }
         return count;
     }
 
-    public int getCountKidsByDeptoCode(String code){
+    public int getCountKidsByDeptoCode(String code) throws ListSEExecption{
         int count = 0;
         if(this.head!=null){
             Node temp = this.head;
@@ -98,11 +118,14 @@ public class ListSE {
                 temp = temp.getNext();
             }
         }
+        else{
+            throw new ListSEExecption("no se pudo localizar al niño");
+        }
         return count;
     }
 
 
-    public void invert() {
+    public void invert() throws ListSEExecption {
         if (this.head != null) {
             ListSE listCP = new ListSE();
             Node temp = this.head;
@@ -112,14 +135,18 @@ public class ListSE {
             }
             this.head = listCP.getHead();
         }
+        else {
+            throw new ListSEExecption("la lista esta vacia");
+        }
     }
 
-    public void boyStartGirlsLast(){
+    public void boyStartGirlsLast() throws ListSEExecption{
         ListSE listCopy = new ListSE();
         Node temp = this.head;
         while (temp != null){
             if (temp.getData().getGender() == 'M'){
                 listCopy.add(temp.getData());
+                throw new ListSEExecption("no se ha podido organizar la lista");
             }
             temp = temp.getNext();
         }
@@ -128,22 +155,25 @@ public class ListSE {
         while (temp != null){
             if (temp.getData().getGender() == 'F'){
                 listCopy.add((temp.getData()));
+                throw new ListSEExecption("no se ha podido organizar la lista");
             }
             temp = temp.getNext();
         }
         this.head = listCopy.getHead();
     }
 
-    public void boyThenGirl(){
+    public void boyThenGirl() throws ListSEExecption{
         ListSE listMale = new ListSE();
         ListSE listFemale = new ListSE();
         Node temp = this.head;
         while (temp != null){
             if(temp.getData().getGender()=='M'){
                 listMale.add(temp.getData());
+                throw new ListSEExecption("no se a podido intercalar la lista");
             }
             if(temp.getData().getGender()=='F'){
                 listFemale.add(temp.getData());
+                throw new ListSEExecption("no se a podido intercalar la lista");
             }
             temp = temp.getNext();
         }
@@ -164,7 +194,7 @@ public class ListSE {
         this.head = sortedList.getHead();
     }
 
-    public void deleteByAge (int age){
+    public void deleteByAge (int age) throws ListSEExecption{
         Node temp = head;
         Node prev = null;
         while (temp != null && temp.getData().getAge() != age){
@@ -177,11 +207,12 @@ public class ListSE {
             }
             else{
                 prev.setNext(temp.getNext());
+                throw new ListSEExecption("no se pudo eliminar al niño de la lista");
             }
         }
     }
 
-    public float averageAge(){
+    public float averageAge() throws ListSEExecption{
 
         if (head != null){
             Node temp = head;
@@ -191,15 +222,16 @@ public class ListSE {
                 contador++;
                 ages = ages + temp.getData().getAge();
                 temp = temp.getNext();
+
             }
             return (float) ages/contador;
         }
         else{
-            return (float) 0;
+            throw new ListSEExecption("no se ha promediar la lista con la edad solicitada");
         }
     }
 
-    public void sendBottomByLetter(char initial){
+    public void sendBottomByLetter(char initial) throws ListSEExecption{
 
 
         ListSE sendBottom = new ListSE();
@@ -208,6 +240,7 @@ public class ListSE {
         while (temp != null){
             if (temp.getData().getName().charAt(0) != Character.toUpperCase(initial)){
                 sendBottom.add(temp.getData());
+                throw new ListSEExecption("no se ha podido mandar al final de la lista los niños indicados");
             }
             temp = temp.getNext();
         }
@@ -217,6 +250,7 @@ public class ListSE {
         while (temp != null){
             if (temp.getData().getName().charAt(0) == Character.toUpperCase(initial)){
                 sendBottom.add(temp.getData());
+                throw new ListSEExecption("no se ha podido mandar al final de la lista los niños indicados");
             }
             temp = temp.getNext();
         }
@@ -224,12 +258,13 @@ public class ListSE {
         this.head = sendBottom.getHead();
     }
 
-    public int rangeByAge(int min,int max){
+    public int rangeByAge(int min,int max) throws ListSEExecption{
         Node temp = head;
         int counter = 0;
         while (temp != null){
             if (temp.getData().getAge() >= min && temp.getData().getAge()<= max){
                 counter++;
+                throw new ListSEExecption("no se pudo organizar la lista por el rango de edad indicado");
 
             }
             temp = temp.getNext();
@@ -238,7 +273,7 @@ public class ListSE {
         return counter;
     }
 
-    public void forwardPositions(String identification, int positions) {
+    public void forwardPositions(String identification, int positions) throws ListSEExecption{
         if (head != null) {
             if (positions < size) {
                 if (head.getData().getIdentification() == identification) {
@@ -257,6 +292,7 @@ public class ListSE {
                     temp.setNext(temp.getNext().getNext());
                     if (positions >= count + 1) {
                         addToStart(temp2.getData());
+                        throw new ListSEExecption("no se pudo organizar al niño en la pocicion indicada");
                     }
                 }
             }
@@ -264,7 +300,7 @@ public class ListSE {
         return;
     }
 
-    public void afterwardsPositions(String identification, int positions){
+    public void afterwardsPositions(String identification, int positions) throws ListSEExecption{
         if (head!=null){
             if(positions<size){
                 if(head.getData().getIdentification()==identification){
@@ -285,6 +321,7 @@ public class ListSE {
                     Node temp2=new Node(temp.getNext().getData());
                     temp.setNext(temp.getNext().getNext());
                     addByPosition(temp2.getData(), count+1+positions);
+                    throw new ListSEExecption("no se pudo organizar al niño en la pocicion indicada");
                 }
             }
             return;
