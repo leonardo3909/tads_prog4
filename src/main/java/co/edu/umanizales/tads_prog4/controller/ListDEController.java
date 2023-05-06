@@ -61,7 +61,7 @@ public class ListDEController {
 
     }
 
-    @GetMapping(path = "/kidsbylocations")
+    @GetMapping(path = "/petsbylocations")
     public ResponseEntity<ResponseDTO> getPetsByLocation(){
         List<KidsByLocationDTO> kidsByLocationDTOList = new ArrayList<>();
         for(Location loc: locationService.getLocations()){
@@ -75,7 +75,7 @@ public class ListDEController {
                 null), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/kidsbydepto")
+    @GetMapping(path = "/petsbydepto")
     public ResponseEntity<ResponseDTO>getCountKidsByDeptoCode(){
         List<KidsByLocationDTO> KidsByLocationDTOList1 = new ArrayList<>();
         for (Location loc: locationService.getLocations()){
