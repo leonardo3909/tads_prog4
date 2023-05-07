@@ -1,5 +1,7 @@
 package co.edu.umanizales.tads_prog4.model;
 
+import co.edu.umanizales.tads_prog4.execption.ListDEExecpcion;
+import co.edu.umanizales.tads_prog4.execption.ListSEExecption;
 import lombok.Data;
 
 @Data
@@ -10,12 +12,19 @@ public class ListDE {
     private int pet;
     private Node tail;
 
-    public void add(Pet pet){
+    public void add(Pet pet) throws ListDEExecpcion {
         if(head != null){
             Node temp = head;
             while(temp.getNext() !=null)
             {
+                if (temp.getData().getIdentification().equals(pet.getIdentification())){
+                    throw new ListDEExecpcion("ya existe en la lista esta mascota");
+                }
                 temp = temp.getNext();
+
+            }
+            if (temp.getData().getIdentification().equals(pet.getIdentification())){
+                throw new ListDEExecpcion("ya existe en la lista mascota");
             }
             /// Parado en el último
             Node newNode = new Node(pet);
@@ -28,18 +37,21 @@ public class ListDE {
         size ++;
     }
 
-    public void addToStart(Pet pet) {
+    public void addToStart(Pet pet) throws ListDEExecpcion {
         Node newNode = new Node(pet);
         if (head != null) {
             newNode.setNext(head);
             head.setPrev(newNode);
+        }
+        else {
+            throw new ListDEExecpcion("no se pudo adicionar a la lista la mascota");
         }
         head = newNode;
         size++;
     }
 
 
-    public void changeExtremes() {
+    public void changeExtremes() throws ListDEExecpcion {
         if (head != null && head.getNext() != null) {
             Node temp = head;
             while (temp.getNext() != null) {
@@ -60,15 +72,19 @@ public class ListDE {
             temp.setPrev(prev);
             head.setPrev(null);
         }
+        else {
+            throw new ListDEExecpcion("No se pudo cambiar los extremos de la lista");
+        }
     }
 
-    public int getCountPetsByLocationCode(String code) {
+    public int getCountPetsByLocationCode(String code) throws ListDEExecpcion {
         int count = 0;
         if (head != null) {
             Node temp = head;
             while (temp != null) {
                 if (temp.getData().getLocation().getCode().equals(code)) {
                     count++;
+                    throw new ListDEExecpcion("no se pudo localizar la mascota");
                 }
                 temp = temp.getNext();
             }
@@ -76,13 +92,14 @@ public class ListDE {
         return count;
     }
 
-    public int getCountPetsByDeptoCode(String code) {
+    public int getCountPetsByDeptoCode(String code) throws ListDEExecpcion {
         int count = 0;
         if (head != null) {
             Node temp = head;
             while (temp != null) {
                 if (temp.getData().getLocation().getCode().substring(0, 5).equals(code)) {
                     count++;
+                    throw new ListDEExecpcion("no se pudo localizar la mascota");
                 }
                 temp = temp.getNext();
             }
@@ -90,7 +107,7 @@ public class ListDE {
         return count;
     }
 
-    public void invert() {
+    public void invert() throws ListDEExecpcion {
         if (head != null) {
             ListDE newList = new ListDE();
             Node temp = head;
@@ -101,9 +118,12 @@ public class ListDE {
             head = newList.getHead();
             tail = newList.getTail();
         }
+        else {
+            throw new ListDEExecpcion("no se pudo imvertir la lista");
+        }
     }
 
-    public void boyStartGirlsLast() {
+    public void boyStartGirlsLast() throws ListDEExecpcion {
         if (head != null) {
             ListDE boysList = new ListDE();
             ListDE girlsList = new ListDE();
@@ -130,18 +150,23 @@ public class ListDE {
                 temp = temp.getNext();
             }
         }
+        else {
+            throw new ListDEExecpcion("no se pudo organizar la lista segun lo indicado");
+        }
     }
 
-    public void boyThenGirl(){
+    public void boyThenGirl() throws ListDEExecpcion{
         ListDE listMale = new ListDE();
         ListDE listFemale = new ListDE();
         Node temp = this.head;
         while (temp != null){
             if(temp.getData().getGender()=='M'){
                 listMale.add(temp.getData2());
+                throw new ListDEExecpcion("error al intentar intercalar la lista");
             }
             if(temp.getData().getGender()=='F'){
                 listFemale.add(temp.getData2());
+                throw new ListDEExecpcion("error al intentar intercalar la lista");
             }
             temp = temp.getNext();
         }
@@ -153,16 +178,18 @@ public class ListDE {
             if (maleNode != null){
                 sortedList.add(maleNode.getData2());
                 maleNode = maleNode.getNext();
+
             }
             if (femaleNode != null){
                 sortedList.add(femaleNode.getData2());
                 femaleNode = femaleNode.getNext();
+
             }
         }
         this.head = sortedList.getHead();
     }
 
-    public void deleteByAge(int age) {
+    public void deleteByAge(int age) throws ListDEExecpcion {
         Node current = head;
         while (current != null && current.getData().getAge() != age) {
             current = current.getNext();
@@ -185,9 +212,12 @@ public class ListDE {
                 current.getNext().setPrev(current.getPrev());
             }
         }
+        else {
+            throw new ListDEExecpcion("no se pudo eliminar a la mascota");
+        }
     }
 
-    public float averageAge() {
+    public float averageAge() throws ListDEExecpcion {
         if (this.head != null) {
             Node temp = this.head;
             int count = 0;
@@ -199,11 +229,11 @@ public class ListDE {
             }
             return (float) ages / count;
         } else {
-            return (float) 0;
+            throw new ListDEExecpcion("no se ha promediado la lista con la edad solicitada");
         }
     }
 
-    public void sendBottomByLetter(char initial){
+    public void sendBottomByLetter(char initial) throws ListDEExecpcion{
         ListDE sendBottom = new ListDE();
         ListDE sendTop = new ListDE();
         Node temp = this.head;
@@ -214,6 +244,7 @@ public class ListDE {
             }
             else{
                 sendBottom.add(temp.getData2());
+                throw new ListDEExecpcion("no se pudo organizar la lista");
             }
             temp = temp.getNext();
         }

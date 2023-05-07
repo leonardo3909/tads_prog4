@@ -227,7 +227,8 @@ public class ListSE {
             return (float) ages/contador;
         }
         else{
-            throw new ListSEExecption("no se ha promediar la lista con la edad solicitada");
+            throw new ListSEExecption("no se ha promediado la lista con la edad solicitada");
+
         }
     }
 
