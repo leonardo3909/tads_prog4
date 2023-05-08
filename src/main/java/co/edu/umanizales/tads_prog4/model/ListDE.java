@@ -251,4 +251,29 @@ public class ListDE {
 
         this.head = sendTop.getHead();
     }
+
+
+    public void deleteById(String id) {
+        Node current = head;
+        while (current != null) {
+            if (current.getData().getIdentification().equals(id)) {
+                if (current == head) { // si el nodo es la cabeza
+                    head = current.getNext();
+                    if (head != null) {
+                        head.setPrev(null);
+                    }
+                } else if (current.getNext() == null) { // si el nodo es cola
+                    current.getPrev().setNext(null);
+                } else { // si el nodo está en el medio
+                    current.getPrev().setNext(current.getNext());
+                    current.getNext().setPrev(current.getPrev());
+                }
+                break;
+            }
+            current = current.getNext();
+        }
+    }
+
+
+
 }

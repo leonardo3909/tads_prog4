@@ -8,6 +8,7 @@ import co.edu.umanizales.tads_prog4.model.Pet;
 import co.edu.umanizales.tads_prog4.servive.ListDEService;
 import co.edu.umanizales.tads_prog4.servive.ListSEService;
 import co.edu.umanizales.tads_prog4.servive.LocationService;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -177,5 +178,12 @@ public class ListDEController {
         List<RangeAgeKidsDTO> kidsRangeDTOList = new ArrayList<>();
         return new ResponseEntity<>(new ResponseDTO(200,kidsRangeDTOList,null),HttpStatus.OK);
 
+    }
+
+    @GetMapping(path = "deletebyid")
+    public ResponseEntity<ResponseDTO>deleteById(@PathVariable String id){
+        listDEService.getPets().deleteById(id);
+        return new ResponseEntity<>(new ResponseDTO(200, "La mascota con esa identificacion han sido eliminada",
+                null), HttpStatus.OK);
     }
 }
