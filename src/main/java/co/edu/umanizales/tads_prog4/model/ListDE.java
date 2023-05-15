@@ -4,41 +4,44 @@ import co.edu.umanizales.tads_prog4.execption.ListDEExecpcion;
 import co.edu.umanizales.tads_prog4.execption.ListSEExecption;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class ListDE {
 
-    private Node head;
+    private NodeDE head;
     private int size;
     private int pet;
-    private Node tail;
+    private NodeDE tail;
 
-    public void add(Pet pet) throws ListDEExecpcion {
+    public void addPets(Pet pet) throws ListDEExecpcion {
         if(head != null){
-            Node temp = head;
+            NodeDE temp = head;
             while(temp.getNext() !=null)
             {
-                if (temp.getData().getIdentification().equals(pet.getIdentification())){
+                if (temp.getData2().getIdentification().equals(pet.getIdentification())){
                     throw new ListDEExecpcion("ya existe en la lista esta mascota");
                 }
                 temp = temp.getNext();
 
             }
-            if (temp.getData().getIdentification().equals(pet.getIdentification())){
+            if (temp.getData2().getIdentification().equals(pet.getIdentification())){
                 throw new ListDEExecpcion("ya existe en la lista mascota");
             }
             /// Parado en el último
-            Node newNode = new Node(pet);
+            NodeDE newNode = new NodeDE(pet);
             temp.setNext(newNode);
             newNode.setPrev(temp);
         }
         else {
-            head = new Node(pet);
+            head = new NodeDE(pet);
         }
         size ++;
     }
 
     public void addToStart(Pet pet) throws ListDEExecpcion {
-        Node newNode = new Node(pet);
+        NodeDE newNode = new NodeDE(pet);
         if (head != null) {
             newNode.setNext(head);
             head.setPrev(newNode);
@@ -53,17 +56,17 @@ public class ListDE {
 
     public void changeExtremes() throws ListDEExecpcion {
         if (head != null && head.getNext() != null) {
-            Node temp = head;
+            NodeDE temp = head;
             while (temp.getNext() != null) {
                 temp = temp.getNext();
             }
             // temp está en el último nodo
-            Kid copy = head.getData();
-            head.setData(temp.getData());
-            temp.setData(copy);
+            Pet copy = head.getData2();
+            head.setData2(temp.getData2());
+            temp.setData2(copy);
 
-            Node prev = temp.getPrev();
-            Node next = head.getNext();
+            NodeDE prev = temp.getPrev();
+            NodeDE next = head.getNext();
 
             head.setNext(temp.getNext());
             temp.setNext(next);
@@ -80,9 +83,9 @@ public class ListDE {
     public int getCountPetsByLocationCode(String code) throws ListDEExecpcion {
         int count = 0;
         if (head != null) {
-            Node temp = head;
+            NodeDE temp = head;
             while (temp != null) {
-                if (temp.getData().getLocation().getCode().equals(code)) {
+                if (temp.getData2().getLocation().getCode().equals(code)) {
                     count++;
                     throw new ListDEExecpcion("no se pudo localizar la mascota");
                 }
@@ -95,9 +98,9 @@ public class ListDE {
     public int getCountPetsByDeptoCode(String code) throws ListDEExecpcion {
         int count = 0;
         if (head != null) {
-            Node temp = head;
+            NodeDE temp = head;
             while (temp != null) {
-                if (temp.getData().getLocation().getCode().substring(0, 5).equals(code)) {
+                if (temp.getData2().getLocation().getCode().substring(0, 5).equals(code)) {
                     count++;
                     throw new ListDEExecpcion("no se pudo localizar la mascota");
                 }
@@ -110,7 +113,7 @@ public class ListDE {
     public void invertPets() throws ListDEExecpcion {
         if (head != null) {
             ListDE newList = new ListDE();
-            Node temp = head;
+            NodeDE temp = head;
             while (temp != null) {
                 newList.addToStart(temp.getData2());
                 temp = temp.getNext();
@@ -127,12 +130,12 @@ public class ListDE {
         if (head != null) {
             ListDE boysList = new ListDE();
             ListDE girlsList = new ListDE();
-            Node temp = head;
+            NodeDE temp = head;
             while (temp != null) {
                 if (temp.getData2().getGender() == 'M') {
                     boysList.addToStart(temp.getData2());
                 } else {
-                    girlsList.add(temp.getData2());
+                    girlsList.addPets(temp.getData2());
                 }
                 temp = temp.getNext();
             }
@@ -145,7 +148,7 @@ public class ListDE {
                 if (temp.getData2().getGender() == 'F') {
                     boysList.addToStart(temp.getData2());
                 } else {
-                    girlsList.add(temp.getData2());
+                    girlsList.addPets(temp.getData2());
                 }
                 temp = temp.getNext();
             }
@@ -158,30 +161,30 @@ public class ListDE {
     public void boyThenGirl() throws ListDEExecpcion{
         ListDE listMale = new ListDE();
         ListDE listFemale = new ListDE();
-        Node temp = this.head;
+        NodeDE temp = this.head;
         while (temp != null){
-            if(temp.getData().getGender()=='M'){
-                listMale.add(temp.getData2());
+            if(temp.getData2().getGender()=='M'){
+                listMale.addPets(temp.getData2());
                 throw new ListDEExecpcion("error al intentar intercalar la lista");
             }
-            if(temp.getData().getGender()=='F'){
-                listFemale.add(temp.getData2());
+            if(temp.getData2().getGender()=='F'){
+                listFemale.addPets(temp.getData2());
                 throw new ListDEExecpcion("error al intentar intercalar la lista");
             }
             temp = temp.getNext();
         }
 
         ListDE sortedList = new ListDE();
-        Node maleNode = listMale.getHead();
-        Node femaleNode = listFemale.getHead();
+        NodeDE maleNode = listMale.getHead();
+        NodeDE femaleNode = listFemale.getHead();
         while (maleNode != null || femaleNode != null){
             if (maleNode != null){
-                sortedList.add(maleNode.getData2());
+                sortedList.addPets(maleNode.getData2());
                 maleNode = maleNode.getNext();
 
             }
             if (femaleNode != null){
-                sortedList.add(femaleNode.getData2());
+                sortedList.addPets(femaleNode.getData2());
                 femaleNode = femaleNode.getNext();
 
             }
@@ -190,8 +193,8 @@ public class ListDE {
     }
 
     public void deleteByAge(int age) throws ListDEExecpcion {
-        Node current = head;
-        while (current != null && current.getData().getAge() != age) {
+        NodeDE current = head;
+        while (current != null && current.getData2().getAge() != age) {
             current = current.getNext();
         }
 
@@ -219,7 +222,7 @@ public class ListDE {
 
     public float averageAge() throws ListDEExecpcion {
         if (this.head != null) {
-            Node temp = this.head;
+            NodeDE temp = this.head;
             int count = 0;
             int ages = 0;
             while (temp != null) {
@@ -236,14 +239,14 @@ public class ListDE {
     public void sendBottomByLetter(char initial) throws ListDEExecpcion{
         ListDE sendBottom = new ListDE();
         ListDE sendTop = new ListDE();
-        Node temp = this.head;
+        NodeDE temp = this.head;
 
         while (temp != null){
-            if (temp.getData().getName().charAt(0) != Character.toUpperCase(initial)){
-                sendTop.add(temp.getData2());
+            if (temp.getData2().getName().charAt(0) != Character.toUpperCase(initial)){
+                sendTop.addPets(temp.getData2());
             }
             else{
-                sendBottom.add(temp.getData2());
+                sendBottom.addPets(temp.getData2());
                 throw new ListDEExecpcion("no se pudo organizar la lista");
             }
             temp = temp.getNext();
@@ -254,9 +257,9 @@ public class ListDE {
 
 
     public void deleteById(String id) {
-        Node current = head;
+        NodeDE current = head;
         while (current != null) {
-            if (current.getData().getIdentification().equals(id)) {
+            if (current.getData2().getIdentification().equals(id)) {
                 if (current == head) { // si el nodo es la cabeza
                     head = current.getNext();
                     if (head != null) {
@@ -274,6 +277,16 @@ public class ListDE {
         }
     }
 
+    public List<Pet> toList(){
+        List<Pet> listPets= new ArrayList<>();
+        NodeDE temp = head;
+        while(temp!= null){
+            listPets.add(temp.getData2());
+            temp = temp.getNext();
+        }
+
+        return  listPets;
+    }
 
 
 }

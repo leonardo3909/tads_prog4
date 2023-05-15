@@ -1,39 +1,57 @@
 package co.edu.umanizales.tads_prog4.model;
 
+import co.edu.umanizales.tads_prog4.execption.ListDECircularExecpcion;
 import co.edu.umanizales.tads_prog4.execption.ListDEExecpcion;
 import lombok.Data;
 
 @Data
 public class ListDECircular {
 
-    private Node head;
+    private NodeDE head;
     private int pet;
     private int size;
-    private Node tail;
+    private NodeDE tail;
 
-    public void add (Pet pet) throws ListDEExecpcion {
-        if (head != null){
-            Node temp = head;
-            while (temp.getNext() != null){
+   public void addPets(Pet pet){
+       NodeDE newPet = new NodeDE(pet);
+       if (this.head != null){
+           NodeDE temp = this.head;
+           while (temp.getNext() != this.head){
+               temp = temp.getNext();
+           }
+           temp.setNext(newPet);
+           newPet.setPrev(temp);
+           newPet.setNext(this.head);
+           this.head.setPrev(newPet);
+       }
+       else{
+           newPet.setNext(newPet);
+           newPet.setPrev(newPet);
+           this.head = newPet;
+       }
+       size++;
+   }
 
-                if (temp.getData2().getIdentification().equals(pet.getIdentification())){
-                    throw new ListDEExecpcion("ya existe la mascota en la lista");
-                }
-                temp = temp.getNext();
-
-            }
-            if (temp.getData2().getIdentification().equals(pet.getIdentification())){
-                throw new ListDEExecpcion("ya existe la mascota en la lista");
-            }
-            Node newNode = new Node(pet);
-            temp.setNext(newNode);
-            newNode.setPrev(temp);
-        }
-        else {
-            head = new Node(pet);
-        }
-        size ++;
-    }
+   public void addPetStart(Pet pet){
+       NodeDE newPet = new NodeDE(pet);
+       if (this.head != null){
+           NodeDE temp = this.head;
+           while (temp.getNext() != this.head){
+               temp = temp.getNext();
+           }
+           temp.setNext(newPet);
+           newPet.setPrev(newPet);
+           newPet.setNext(head);
+           head.setPrev(newPet);
+           this.head = newPet;
+       }
+       else{
+           newPet.setNext(newPet);
+           newPet.setPrev(newPet);
+           this.head = newPet;
+       }
+       size++;
+   }
 
 
 }

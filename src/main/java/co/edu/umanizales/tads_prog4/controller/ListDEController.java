@@ -29,7 +29,7 @@ public class ListDEController {
     @GetMapping
     public ResponseEntity<ResponseDTO> getPets(){
         return new ResponseEntity<>(new ResponseDTO(
-                200,listDEService.getPets().getHead(),null), HttpStatus.OK);
+                200,listDEService.getPets().toList(),null), HttpStatus.OK);
     }
 
     @GetMapping(path = "/invert")
@@ -66,7 +66,7 @@ public class ListDEController {
                         404,"La ubicación no existe",
                         null), HttpStatus.OK);
             }
-            listDEService.getPets().add(
+            listDEService.getPets().addPets(
                     new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getRaze(),location));
             return new ResponseEntity<>(new ResponseDTO(
                     200,"Se ha adicionado la mascota",
