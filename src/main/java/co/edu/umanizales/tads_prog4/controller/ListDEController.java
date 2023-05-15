@@ -38,7 +38,7 @@ public class ListDEController {
             listDEService.getPets().invertPets();
             return new ResponseEntity<>(new ResponseDTO(200,
                     "The list has been inverted", null), HttpStatus.OK);
-        }catch (ListDEExecpcion deExecpcion){
+        }catch (ListDEExecpcion ExceptionDE){
             return new ResponseEntity<>(new ResponseDTO(500,"Error al intentar invertir la lista",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -51,7 +51,7 @@ public class ListDEController {
             return new ResponseEntity<>(new ResponseDTO(
                     200,"SE han intercambiado los extremos",
                     null), HttpStatus.OK);
-        }catch (ListDEExecpcion deExecpcion){
+    }catch (ListDEExecpcion ExceptionDE){
             return new ResponseEntity<>(new ResponseDTO(500,"no se pudo intercambiar los extremos",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -71,7 +71,7 @@ public class ListDEController {
             return new ResponseEntity<>(new ResponseDTO(
                     200,"Se ha adicionado la mascota",
                     null), HttpStatus.OK);
-        }catch (ListDEExecpcion deExecpcion){
+        }catch (ListDEExecpcion ExceptionDE){
             return new ResponseEntity<>(new ResponseDTO(500,"no se pudo agregar a la lista la mascota",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -91,7 +91,7 @@ public class ListDEController {
             return new ResponseEntity<>(new ResponseDTO(
                     200,kidsByLocationDTOList,
                     null), HttpStatus.OK);
-        }catch (ListDEExecpcion deExecpcion){
+        }catch (ListDEExecpcion ExceptionDE){
             return new ResponseEntity<>(new ResponseDTO(500,"no se pudo ubicar a la mascota",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -108,7 +108,7 @@ public class ListDEController {
                 }
             }
             return new ResponseEntity<>(new ResponseDTO(200,KidsByLocationDTOList1,null),HttpStatus.OK);
-        }catch (ListDEExecpcion deExecpcion){
+        }catch (ListDEExecpcion ExceptionDE){
             return new ResponseEntity<>(new ResponseDTO(500,"no se pudo hacer la cuenta en la lista",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -120,7 +120,7 @@ public class ListDEController {
             listDEService.getPets().boyStartGirlsLast();
             return new ResponseEntity<>(new ResponseDTO(200, "Los machos salen al inicio, las hembras al final",
                     null), HttpStatus.OK);
-        }catch (ListDEExecpcion deExecpcion){
+        }catch (ListDEExecpcion ExceptionDE){
             return new ResponseEntity<>(new ResponseDTO(500,"no se pudo organizar la lista segun lo indicado",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -132,7 +132,7 @@ public class ListDEController {
             listDEService.getPets().boyThenGirl();
             return new ResponseEntity<>(new ResponseDTO(200, "Las mascotas han sido alternados según su género",
                     null), HttpStatus.OK);
-        }catch (ListDEExecpcion deExecpcion){
+        }catch (ListDEExecpcion ExceptionDE){
             return new ResponseEntity<>(new ResponseDTO(500,"error al intentar alternar la lista",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -144,7 +144,7 @@ public class ListDEController {
             listDEService.getPets().deleteByAge(age);
             return new ResponseEntity<>(new ResponseDTO(200, "Las mascotas han sido eliminados",
                     null), HttpStatus.OK);
-        }catch (ListDEExecpcion deExecpcion){
+        }catch (ListDEExecpcion ExceptionDE){
             return new ResponseEntity<>(new ResponseDTO(500,"no se pudo eliminar la mascota",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -155,7 +155,7 @@ public class ListDEController {
         try {
             return new ResponseEntity<>(new ResponseDTO(200,
                     listDEService.getPets().averageAge(), null), HttpStatus.OK);
-        }catch (ListDEExecpcion deExecpcion){
+        }catch (ListDEExecpcion ExceptionDE){
             return new ResponseEntity<>(new ResponseDTO(500,"error al intentar organizar la lista segun lo indicado",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -167,20 +167,13 @@ public class ListDEController {
             listDEService.getPets().sendBottomByLetter(Character.toUpperCase(initial));
             return new ResponseEntity<>(new ResponseDTO(200, "Las mascotas con esa letra se han enviado al final",
                     null), HttpStatus.OK);
-        }catch (ListDEExecpcion deExecpcion){
+        }catch (ListDEExecpcion ExceptionDE){
             return new ResponseEntity<>(new ResponseDTO(500,"no se pudo enviar la mascota con esa letra al final por un error",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
-    @GetMapping(path = "/Rangeage")
-    public ResponseEntity<ResponseDTO> getRangeByKids(){
-        List<RangeAgeKidsDTO> kidsRangeDTOList = new ArrayList<>();
-        return new ResponseEntity<>(new ResponseDTO(200,kidsRangeDTOList,null),HttpStatus.OK);
-
-    }
-
-    @GetMapping(path = "deletebyid")
+    @GetMapping(path = "deletebyid/{id}")
     public ResponseEntity<ResponseDTO>deleteById(@PathVariable String id){
         listDEService.getPets().deleteById(id);
         return new ResponseEntity<>(new ResponseDTO(200, "La mascota con esa identificacion han sido eliminada",

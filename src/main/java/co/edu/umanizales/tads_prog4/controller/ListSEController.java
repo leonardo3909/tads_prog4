@@ -40,7 +40,7 @@ public class ListSEController {
             listSEService.getKids().invert();
             return new ResponseEntity<>(new ResponseDTO(200,
                     "The list has been inverted", null), HttpStatus.OK);
-        }catch (ListSEExecption execption){
+        }catch (ListSEExecption exception){
             return new ResponseEntity<>(new ResponseDTO(500,"Se ha presentado un error al intentar invertir la lista",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -53,7 +53,7 @@ public class ListSEController {
             return new ResponseEntity<>(new ResponseDTO(
                     200,"SE han intercambiado los extremos",
                     null), HttpStatus.OK);
-        } catch (ListSEExecption execption){
+        } catch (ListSEExecption exception){
             return new ResponseEntity<>(new ResponseDTO(500,"Error al intentar intercalar los extremos",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -76,7 +76,7 @@ public class ListSEController {
                     200,"Se ha adicionado el petacón",
                     null), HttpStatus.OK);
 
-        }catch (ListSEExecption execption){
+        }catch (ListSEExecption exception){
             return new ResponseEntity<>(new ResponseDTO(500,"Error al adicionar el petacon",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -95,7 +95,7 @@ public class ListSEController {
             return new ResponseEntity<>(new ResponseDTO(
                     200,kidsByLocationDTOList,
                     null), HttpStatus.OK);
-        } catch (ListSEExecption execption){
+        } catch (ListSEExecption exception){
             return new ResponseEntity<>(new ResponseDTO(500,"Ocurrio un error al obtener los niños por ubicacion",null ),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -112,7 +112,7 @@ public class ListSEController {
                 }
             }
             return new ResponseEntity<>(new ResponseDTO(200,KidsByLocationDTOList1,null),HttpStatus.OK);
-        }catch (ListSEExecption execption){
+        }catch (ListSEExecption exception){
             return new ResponseEntity<>(new ResponseDTO(500,"Se ha presentado un error al intentar ubicar al petacon",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -124,7 +124,7 @@ public class ListSEController {
             listSEService.getKids().boyStartGirlsLast();
             return new ResponseEntity<>(new ResponseDTO(200, "Los niños salen al inicio, las niñas al final",
                     null), HttpStatus.OK);
-        }catch (ListSEExecption execption){
+        }catch (ListSEExecption exception){
             return new ResponseEntity<>(new ResponseDTO(500,"Se a presentado un error al intentar modificar la lista",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -136,7 +136,7 @@ public class ListSEController {
             listSEService.getKids().boyThenGirl();
             return new ResponseEntity<>(new ResponseDTO(200, "Los niños han sido alternados según su género",
                     null), HttpStatus.OK);
-        }catch (ListSEExecption execption){
+        }catch (ListSEExecption exception){
             return new ResponseEntity<>(new ResponseDTO(500,"Se ha presentado un error al inentar alternar la lista",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -148,7 +148,7 @@ public class ListSEController {
             listSEService.getKids().deleteByAge(age);
             return new ResponseEntity<>(new ResponseDTO(200, "Los niños han sido eliminados",
                     null), HttpStatus.OK);
-        }catch (ListSEExecption execption){
+        }catch (ListSEExecption exception){
             return new ResponseEntity<>(new ResponseDTO(500,"Se presento un error al intentar eliminal al niño",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -159,7 +159,7 @@ public class ListSEController {
         try {
             return new ResponseEntity<>(new ResponseDTO(200,
                     listSEService.getKids().averageAge(), null), HttpStatus.OK);
-        }catch (ListSEExecption execption){
+        }catch (ListSEExecption exception){
             return new ResponseEntity<>(new ResponseDTO(500,"se ha presentado un error al intentar organizar la lista por la edad promedio indicada",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -171,7 +171,7 @@ public class ListSEController {
             listSEService.getKids().sendBottomByLetter(Character.toUpperCase(initial));
             return new ResponseEntity<>(new ResponseDTO(200, "Los niños con esa letra se han enviado al final",
                     null), HttpStatus.OK);
-        }catch (ListSEExecption execption){
+        }catch (ListSEExecption exception){
             return new ResponseEntity<>(new ResponseDTO(500,"No se pudo mover los niños con la letra indicada al final de la lista",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -186,23 +186,23 @@ public class ListSEController {
         return new ResponseEntity<>(new ResponseDTO(200,kidsRangeDTOList,null),HttpStatus.OK);
     }
 
-    @GetMapping(path="/forwardpositions")
+    @GetMapping(path="/forwardpositions/{identification}")
     public ResponseEntity<ResponseDTO> forwardPositions(@PathVariable String identification, int positions){
         try {
             listSEService.getKids().forwardPositions(identification, positions);
             return new ResponseEntity<>(new ResponseDTO(200, "The kid has been moved to the position", null), HttpStatus.OK);
-        }catch (ListSEExecption execption){
+        }catch (ListSEExecption exception){
             return new ResponseEntity<>(new ResponseDTO(500,"error al intentar mover mover ese niño de pocicion",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
-    @GetMapping(path="/afterwardspositions")
+    @GetMapping(path="/afterwardspositions/{identification}")
     public ResponseEntity<ResponseDTO> afterwardsPositions(@PathVariable String identification, int positions){
         try {
             listSEService.getKids().afterwardsPositions(identification, positions);
             return new ResponseEntity<>(new ResponseDTO(200, "The kid has been moved to the position", null), HttpStatus.OK);
-        }catch (ListSEExecption execption){
+        }catch (ListSEExecption exception){
             return new ResponseEntity<>(new ResponseDTO(500,"error al intentar mover mover ese niño de pocicion",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
