@@ -107,7 +107,7 @@ public class ListDE {
         return count;
     }
 
-    public void invert() throws ListDEExecpcion {
+    public void invertPets() throws ListDEExecpcion {
         if (head != null) {
             ListDE newList = new ListDE();
             Node temp = head;

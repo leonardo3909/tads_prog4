@@ -33,9 +33,9 @@ public class ListDEController {
     }
 
     @GetMapping(path = "/invert")
-    public ResponseEntity<ResponseDTO> invert() {
+    public ResponseEntity<ResponseDTO> invertPets() {
         try {
-            listDEService.getPets().invert();
+            listDEService.getPets().invertPets();
             return new ResponseEntity<>(new ResponseDTO(200,
                     "The list has been inverted", null), HttpStatus.OK);
         }catch (ListDEExecpcion deExecpcion){
