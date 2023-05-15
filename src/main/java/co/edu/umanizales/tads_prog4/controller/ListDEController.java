@@ -67,7 +67,7 @@ public class ListDEController {
                         null), HttpStatus.OK);
             }
             listDEService.getPets().add(
-                    new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getCodeLocation(),location));
+                    new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getRaze(),location));
             return new ResponseEntity<>(new ResponseDTO(
                     200,"Se ha adicionado la mascota",
                     null), HttpStatus.OK);
