@@ -13,4 +13,10 @@ public class Pet {
     private char gender;
     private String race;
     private Location location;
+    private boolean dirty;
+
+
+    public Pet(String identification, String name, byte age, char gender, String raze, Location location) {
+    }
+
 }

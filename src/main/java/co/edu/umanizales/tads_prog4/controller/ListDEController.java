@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(path = "/Listde")
+@RequestMapping(path = "/listde")
 public class ListDEController {
 
     @Autowired
@@ -37,7 +37,7 @@ public class ListDEController {
         try {
             listDEService.getPets().invertPets();
             return new ResponseEntity<>(new ResponseDTO(200,
-                    "The list has been inverted", null), HttpStatus.OK);
+                    "la lista se ha invertido ", null), HttpStatus.OK);
         }catch (ListDEExecpcion ExceptionDE){
             return new ResponseEntity<>(new ResponseDTO(500,"Error al intentar invertir la lista",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
