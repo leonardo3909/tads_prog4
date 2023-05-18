@@ -57,8 +57,8 @@ public class ListDEController {
 
     }
 
-    @PostMapping
-    public ResponseEntity<ResponseDTO> addPet(@RequestBody PetDTO petDTO){
+    @PostMapping(path = "addpets")
+    public ResponseEntity<ResponseDTO> addPets(@RequestBody PetDTO petDTO){
         try {
             Location location = locationService.getLocationByCode(petDTO.getCodeLocation());
             if(location == null){

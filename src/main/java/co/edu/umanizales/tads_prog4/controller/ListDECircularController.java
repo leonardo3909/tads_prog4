@@ -26,7 +26,7 @@ public class ListDECircularController {
     private LocationService locationService;
 
     @GetMapping
-    public ResponseEntity<ResponseDTO> getPets(){
+    public ResponseEntity<ResponseDTO> getPet(){
         return new ResponseEntity<>(new ResponseDTO(
                 200,listDECircularService.getPets().getHead(),null), HttpStatus.OK);
     }
