@@ -1,16 +1,14 @@
 package co.edu.umanizales.tads_prog4.controller;
 
-import co.edu.umanizales.tads_prog4.dto.KidDTO;
-import co.edu.umanizales.tads_prog4.dto.KidsByLocationDTO;
-import co.edu.umanizales.tads_prog4.dto.RangeAgeKidsDTO;
-import co.edu.umanizales.tads_prog4.dto.ResponseDTO;
+import co.edu.umanizales.tads_prog4.controller.dto.KidDTO;
+import co.edu.umanizales.tads_prog4.controller.dto.KidsByLocationDTO;
+import co.edu.umanizales.tads_prog4.controller.dto.RangeAgeKidsDTO;
+import co.edu.umanizales.tads_prog4.controller.dto.ResponseDTO;
 import co.edu.umanizales.tads_prog4.execption.ListSEExecption;
 import co.edu.umanizales.tads_prog4.model.Kid;
 import co.edu.umanizales.tads_prog4.model.Location;
-import co.edu.umanizales.tads_prog4.model.Rangesk;
 import co.edu.umanizales.tads_prog4.servive.ListSEService;
 import co.edu.umanizales.tads_prog4.servive.LocationService;
-import co.edu.umanizales.tads_prog4.servive.RangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

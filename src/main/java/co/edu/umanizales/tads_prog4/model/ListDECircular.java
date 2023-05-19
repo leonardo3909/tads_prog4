@@ -14,26 +14,40 @@ public class ListDECircular {
     private int size;
     private NodeDE random;
 
-   public void addPetsCircular(Pet pet) throws ListDECircularExecpcion{
-       NodeDE newPet = new NodeDE(pet);
-       if (this.head != null){
-           NodeDE temp = this.head;
-           while (temp.getNext() != this.head){
-               temp = temp.getNext();
-           }
-           temp.setNext(newPet);
-           newPet.setPrev(temp);
-           newPet.setNext(this.head);
-           this.head.setPrev(newPet);
-       }
-       else{
-           newPet.setNext(newPet);
-           newPet.setPrev(newPet);
-           this.head = newPet;
-           throw new ListDECircularExecpcion("no se pudo adicionar la mascota");
-       }
-       size++;
-   }
+
+    public void addPetsCircular(Pet pet) throws ListDECircularExecpcion {
+        if(head != null){
+            NodeDE temp = head;
+            NodeDE newPet = new NodeDE(pet);
+            while(temp.getNext() !=null)
+            {
+                if (temp.getData2().getIdentification().equals(pet.getIdentification())){
+                    throw new ListDECircularExecpcion("ya existe en la lista esta mascota");
+                }
+                temp.setNext(newPet);
+                newPet.setPrev(temp);
+                newPet.setNext(this.head);
+                this.head.setPrev(newPet);
+
+            }
+            if (temp.getData2().getIdentification().equals(pet.getIdentification())){
+                throw new ListDECircularExecpcion("ya existe en la lista mascota");
+            }
+            /// Parado en el último
+            NodeDE newNode = new NodeDE(pet);
+            temp.setNext(newNode);
+            newNode.setPrev(temp);
+            temp.setNext(newPet);
+            newPet.setPrev(temp);
+            newPet.setNext(this.head);
+            this.head = newPet;
+
+        }
+        else {
+            head = new NodeDE(pet);
+        }
+        size ++;
+    }
 
    public void addPetStart(Pet pet) throws ListDECircularExecpcion{
        NodeDE newPet = new NodeDE(pet);

@@ -1,15 +1,12 @@
 package co.edu.umanizales.tads_prog4.controller;
 
-import co.edu.umanizales.tads_prog4.dto.PetDTO;
-import co.edu.umanizales.tads_prog4.dto.ResponseDTO;
+import co.edu.umanizales.tads_prog4.controller.dto.PetDTO;
+import co.edu.umanizales.tads_prog4.controller.dto.ResponseDTO;
 import co.edu.umanizales.tads_prog4.execption.ListDECircularExecpcion;
-import co.edu.umanizales.tads_prog4.execption.ListDEExecpcion;
 import co.edu.umanizales.tads_prog4.model.Location;
 import co.edu.umanizales.tads_prog4.model.Pet;
 import co.edu.umanizales.tads_prog4.servive.ListDECircularService;
-import co.edu.umanizales.tads_prog4.servive.ListDEService;
 import co.edu.umanizales.tads_prog4.servive.LocationService;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +28,7 @@ public class ListDECircularController {
                 200,listDECircularService.getPets().getHead(),null), HttpStatus.OK);
     }
 
-    @PostMapping(path = "/addpetcircular")
+    @PostMapping
     public ResponseEntity<ResponseDTO> addPetCircular(@RequestBody PetDTO petDTO){
         try {
             Location location = locationService.getLocationByCode(petDTO.getCodeLocation());
@@ -41,7 +38,7 @@ public class ListDECircularController {
                         null), HttpStatus.OK);
             }
             listDECircularService.getPets().addPetsCircular(
-                    new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getRaze(),location));
+                    new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getRaze(),location,true));
             return new ResponseEntity<>(new ResponseDTO(
                     200,"Se ha adicionado la mascota al final",
                     null), HttpStatus.OK);
@@ -62,7 +59,7 @@ public class ListDECircularController {
                         null), HttpStatus.OK);
             }
             listDECircularService.getPets().addPetsCircular(
-                    new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getRaze(),location));
+                    new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getRaze(),location,true));
             return new ResponseEntity<>(new ResponseDTO(
                     200,"Se ha adicionado la mascota",
                     null), HttpStatus.OK);

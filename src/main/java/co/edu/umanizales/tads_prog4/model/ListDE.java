@@ -110,19 +110,18 @@ public class ListDE {
         return count;
     }
 
-    public void invertPets() throws ListDEExecpcion {
-        if (head != null) {
-            ListDE newList = new ListDE();
-            NodeDE temp = head;
+    public void invertPets() throws ListDEExecpcion{
+        if (this.head != null) {
+            ListDE listCP = new ListDE();
+            NodeDE temp = this.head;
             while (temp != null) {
-                newList.addToStart(temp.getData2());
+                listCP.addPets(temp.getData2());
                 temp = temp.getNext();
             }
-            head = newList.getHead();
-            tail = newList.getTail();
+            this.head = listCP.getHead();
         }
-        else {
-            throw new ListDEExecpcion("no se pudo imvertir la lista");
+        else{
+            throw new ListDEExecpcion("La lista está vacía");
         }
     }
 

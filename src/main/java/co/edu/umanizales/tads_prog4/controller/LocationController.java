@@ -1,6 +1,6 @@
 package co.edu.umanizales.tads_prog4.controller;
 
-import co.edu.umanizales.tads_prog4.dto.ResponseDTO;
+import co.edu.umanizales.tads_prog4.controller.dto.ResponseDTO;
 import co.edu.umanizales.tads_prog4.servive.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

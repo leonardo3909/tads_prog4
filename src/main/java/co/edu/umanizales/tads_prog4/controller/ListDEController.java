@@ -1,14 +1,14 @@
 package co.edu.umanizales.tads_prog4.controller;
 
-import co.edu.umanizales.tads_prog4.dto.*;
+import co.edu.umanizales.tads_prog4.controller.dto.KidsByLocationDTO;
+import co.edu.umanizales.tads_prog4.controller.dto.PetDTO;
+import co.edu.umanizales.tads_prog4.controller.dto.PetsByLocationDTO;
+import co.edu.umanizales.tads_prog4.controller.dto.ResponseDTO;
 import co.edu.umanizales.tads_prog4.execption.ListDEExecpcion;
-import co.edu.umanizales.tads_prog4.model.Kid;
 import co.edu.umanizales.tads_prog4.model.Location;
 import co.edu.umanizales.tads_prog4.model.Pet;
 import co.edu.umanizales.tads_prog4.servive.ListDEService;
-import co.edu.umanizales.tads_prog4.servive.ListSEService;
 import co.edu.umanizales.tads_prog4.servive.LocationService;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,16 +32,18 @@ public class ListDEController {
                 200,listDEService.getPets().toList(),null), HttpStatus.OK);
     }
 
-    @GetMapping(path = "/invert")
+    @GetMapping("/invertpets")
     public ResponseEntity<ResponseDTO> invertPets() {
         try {
             listDEService.getPets().invertPets();
-            return new ResponseEntity<>(new ResponseDTO(200,
-                    "la lista se ha invertido ", null), HttpStatus.OK);
-        }catch (ListDEExecpcion ExceptionDE){
-            return new ResponseEntity<>(new ResponseDTO(500,"Error al intentar invertir la lista",null),HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ResponseDTO(
+                    200, "Se ha invertido la lista",
+                    null), HttpStatus.OK);
+        } catch (ListDEExecpcion execpcion) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    500, "Error al invertir la lista",
+                    null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
     @GetMapping(path = "/change_extremes")
@@ -67,7 +69,7 @@ public class ListDEController {
                         null), HttpStatus.OK);
             }
             listDEService.getPets().addPets(
-                    new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getRaze(),location));
+                    new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getRaze(),location,false));
             return new ResponseEntity<>(new ResponseDTO(
                     200,"Se ha adicionado la mascota",
                     null), HttpStatus.OK);
@@ -78,18 +80,19 @@ public class ListDEController {
 
     }
 
-    @GetMapping(path = "/petsbylocations")
-    public ResponseEntity<ResponseDTO> getPetsByLocation(){
+    @GetMapping(path = "/petsbylocations/{code}")
+    public ResponseEntity<ResponseDTO> getPetsByLocation(@PathVariable Location code){
         try {
-            List<KidsByLocationDTO> kidsByLocationDTOList = new ArrayList<>();
+            listDEService.getPets().getPetsByLocation(code);
+            List<PetsByLocationDTO> PetsByLocationDTOList = new ArrayList<>();
             for(Location loc: locationService.getLocations()){
                 int count = listDEService.getPets().getCountPetsByLocationCode(loc.getCode());
                 if(count>0){
-                    kidsByLocationDTOList.add(new KidsByLocationDTO(loc,count));
+                    PetsByLocationDTOList.add(new PetsByLocationDTO(loc,count));
                 }
             }
             return new ResponseEntity<>(new ResponseDTO(
-                    200,kidsByLocationDTOList,
+                    200,PetsByLocationDTOList,
                     null), HttpStatus.OK);
         }catch (ListDEExecpcion ExceptionDE){
             return new ResponseEntity<>(new ResponseDTO(500,"no se pudo ubicar a la mascota",null),HttpStatus.INTERNAL_SERVER_ERROR);

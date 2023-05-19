@@ -16,7 +16,5 @@ public class Pet {
     private boolean dirty;
 
 
-    public Pet(String identification, String name, byte age, char gender, String raze, Location location) {
-    }
 
 }
