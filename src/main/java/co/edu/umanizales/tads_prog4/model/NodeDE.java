@@ -6,7 +6,7 @@ import lombok.Data;
 public class NodeDE {
 
     private Pet data2;
-    private NodeDE next;
+    private NodeDE nextDE;
     private NodeDE prev;
 
     public NodeDE(Pet data) {

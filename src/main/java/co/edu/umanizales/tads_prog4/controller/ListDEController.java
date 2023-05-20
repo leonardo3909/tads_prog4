@@ -1,6 +1,5 @@
 package co.edu.umanizales.tads_prog4.controller;
 
-import co.edu.umanizales.tads_prog4.controller.dto.KidsByLocationDTO;
 import co.edu.umanizales.tads_prog4.controller.dto.PetDTO;
 import co.edu.umanizales.tads_prog4.controller.dto.PetsByLocationDTO;
 import co.edu.umanizales.tads_prog4.controller.dto.ResponseDTO;
@@ -46,10 +45,10 @@ public class ListDEController {
         }
     }
 
-    @GetMapping(path = "/change_extremes")
-    public ResponseEntity<ResponseDTO> changeExtremes() {
+    @GetMapping(path = "/changeextremespets")
+    public ResponseEntity<ResponseDTO> changeExtremesPets() {
         try {
-            listDEService.getPets().changeExtremes();
+            listDEService.getPets().changeExtremesPets();
             return new ResponseEntity<>(new ResponseDTO(
                     200,"SE han intercambiado los extremos",
                     null), HttpStatus.OK);
@@ -80,10 +79,31 @@ public class ListDEController {
 
     }
 
-    @GetMapping(path = "/petsbylocations/{code}")
-    public ResponseEntity<ResponseDTO> getPetsByLocation(@PathVariable Location code){
+    @PostMapping(path = "addtostartpet")
+    public ResponseEntity<ResponseDTO> addToStartPet(@RequestBody PetDTO petDTO){
         try {
-            listDEService.getPets().getPetsByLocation(code);
+            Location location = locationService.getLocationByCode(petDTO.getCodeLocation());
+            if(location == null){
+                return new ResponseEntity<>(new ResponseDTO(
+                        404,"La ubicación no existe",
+                        null), HttpStatus.OK);
+            }
+            listDEService.getPets().addPets(
+                    new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getRaze(),location,false));
+            return new ResponseEntity<>(new ResponseDTO(
+                    200,"Se ha adicionado la mascota al principio",
+                    null), HttpStatus.OK);
+        }catch (ListDEExecpcion ExceptionDE){
+            return new ResponseEntity<>(new ResponseDTO(500,"no se pudo agregar a la lista la mascota",null),HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+
+    }
+
+    @GetMapping(path = "/petsbylocations/{code}")
+    public ResponseEntity<ResponseDTO> getCountPetsByLocationCode(@PathVariable String code){
+        try {
+            listDEService.getPets().getCountPetsByLocationCode(code);
             List<PetsByLocationDTO> PetsByLocationDTOList = new ArrayList<>();
             for(Location loc: locationService.getLocations()){
                 int count = listDEService.getPets().getCountPetsByLocationCode(loc.getCode());
@@ -100,45 +120,36 @@ public class ListDEController {
 
     }
 
-    @GetMapping(path = "/petsbydepto")
-    public ResponseEntity<ResponseDTO>getCountPetsByDeptoCode(){
+    @GetMapping(path = "/petsbydepto/{code}")
+    public ResponseEntity<ResponseDTO>getCountPetsByDeptoCode(@PathVariable String code){
         try {
-            List<KidsByLocationDTO> KidsByLocationDTOList1 = new ArrayList<>();
+            listDEService.getPets().getCountPetsByDeptoCode(code);
+            List<PetsByLocationDTO> PetsByLocationDTOList1 = new ArrayList<>();
             for (Location loc: locationService.getLocations()){
                 int count = listDEService.getPets().getCountPetsByDeptoCode(loc.getCode());
                 if (count>0){
-                    KidsByLocationDTOList1.add(new KidsByLocationDTO(loc,count));
+                    PetsByLocationDTOList1.add(new PetsByLocationDTO(loc,count));
                 }
             }
-            return new ResponseEntity<>(new ResponseDTO(200,KidsByLocationDTOList1,null),HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseDTO(200,PetsByLocationDTOList1,null),HttpStatus.OK);
         }catch (ListDEExecpcion ExceptionDE){
-            return new ResponseEntity<>(new ResponseDTO(500,"no se pudo hacer la cuenta en la lista",null),HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ResponseDTO(500,"no se pudo ubicar a la mascota",null),HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
 
-    @GetMapping(path="/boysfirstgirlslast")
-    public ResponseEntity<ResponseDTO> boyStartGirlsLast(){
+
+    @GetMapping(path="/insertmalefemale")
+    public ResponseEntity<ResponseDTO> petMaleIntercalateFemale()  {
         try {
-            listDEService.getPets().boyStartGirlsLast();
-            return new ResponseEntity<>(new ResponseDTO(200, "Los machos salen al inicio, las hembras al final",
+            listDEService.getPets().intercalatePetsGender();
+            return new ResponseEntity<>(new ResponseDTO(200, "Las mascotas se han intercalado.",
                     null), HttpStatus.OK);
-        }catch (ListDEExecpcion ExceptionDE){
-            return new ResponseEntity<>(new ResponseDTO(500,"no se pudo organizar la lista segun lo indicado",null),HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (ListDEExecpcion execpcion) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    500, "Ocurrió un error al intercalar el género de las mascotas",
+                    null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
-    }
-
-    @GetMapping(path="/boythengirl")
-    public ResponseEntity<ResponseDTO> boyThenGirl(){
-        try {
-            listDEService.getPets().boyThenGirl();
-            return new ResponseEntity<>(new ResponseDTO(200, "Las mascotas han sido alternados según su género",
-                    null), HttpStatus.OK);
-        }catch (ListDEExecpcion ExceptionDE){
-            return new ResponseEntity<>(new ResponseDTO(500,"error al intentar alternar la lista",null),HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
     }
 
     @GetMapping(path = "/deletebyage/{age}")

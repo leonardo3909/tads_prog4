@@ -9,61 +9,61 @@ import java.util.Random;
 @Data
 public class ListDECircular {
 
-    private NodeDE head;
+    private NodeDC head;
     private int pet;
     private int size;
-    private NodeDE random;
+    private NodeDC random;
 
 
     public void addPetsCircular(Pet pet) throws ListDECircularExecpcion {
         if(head != null){
-            NodeDE temp = head;
-            NodeDE newPet = new NodeDE(pet);
-            while(temp.getNext() !=null)
+            NodeDC temp = head;
+            NodeDC newPet = new NodeDC(pet);
+            while(temp.getNextDC() !=null)
             {
-                if (temp.getData2().getIdentification().equals(pet.getIdentification())){
+                if (temp.getDataDC().getIdentification().equals(pet.getIdentification())){
                     throw new ListDECircularExecpcion("ya existe en la lista esta mascota");
                 }
-                temp.setNext(newPet);
+                temp.setNextDC(newPet);
                 newPet.setPrev(temp);
-                newPet.setNext(this.head);
+                newPet.setNextDC(this.head);
                 this.head.setPrev(newPet);
 
             }
-            if (temp.getData2().getIdentification().equals(pet.getIdentification())){
+            if (temp.getDataDC().getIdentification().equals(pet.getIdentification())){
                 throw new ListDECircularExecpcion("ya existe en la lista mascota");
             }
             /// Parado en el último
-            NodeDE newNode = new NodeDE(pet);
-            temp.setNext(newNode);
+            NodeDC newNode = new NodeDC(pet);
+            temp.setNextDC(newNode);
             newNode.setPrev(temp);
-            temp.setNext(newPet);
+            temp.setNextDC(newPet);
             newPet.setPrev(temp);
-            newPet.setNext(this.head);
+            newPet.setNextDC(this.head);
             this.head = newPet;
 
         }
         else {
-            head = new NodeDE(pet);
+            head = new NodeDC(pet);
         }
         size ++;
     }
 
    public void addPetStart(Pet pet) throws ListDECircularExecpcion{
-       NodeDE newPet = new NodeDE(pet);
+       NodeDC newPet = new NodeDC(pet);
        if (this.head != null){
-           NodeDE temp = this.head;
-           while (temp.getNext() != this.head){
-               temp = temp.getNext();
+           NodeDC temp = this.head;
+           while (temp.getNextDC() != this.head){
+               temp = temp.getNextDC();
            }
-           temp.setNext(newPet);
+           temp.setNextDC(newPet);
            newPet.setPrev(newPet);
-           newPet.setNext(head);
+           newPet.setNextDC(head);
            head.setPrev(newPet);
            this.head = newPet;
        }
        else{
-           newPet.setNext(newPet);
+           newPet.setNextDC(newPet);
            newPet.setPrev(newPet);
            this.head = newPet;
            throw new ListDECircularExecpcion("no se pudo adicionar la mascota al final");
@@ -73,7 +73,7 @@ public class ListDECircular {
 
     public int bathPets(char letter) throws ListDECircularExecpcion {
         char start = Character.toLowerCase(letter);
-        NodeDE temp = head;
+        NodeDC temp = head;
 
         if (temp == null) {
             throw new ListDECircularExecpcion(" No se encontraron mascotas para bañar");
@@ -87,17 +87,17 @@ public class ListDECircular {
         int num = rand.nextInt(size) + 1;
 
         if (num == 1) {
-            if (temp.getData2().isDirty()) {
-                temp.getData2().setDirty(false);
+            if (temp.getDataDC().isDirty()) {
+                temp.getDataDC().setDirty(false);
             } else {
-                throw new ListDECircularExecpcion("nombre de la mascota: " + temp.getData2().getName() + " y de id " +
-                        temp.getData2().getIdentification() + " la mascota ya se encuentra bañada y libre de pulgas ");
+                throw new ListDECircularExecpcion("nombre de la mascota: " + temp.getDataDC().getName() + " y de id " +
+                        temp.getDataDC().getIdentification() + " la mascota ya se encuentra bañada y libre de pulgas ");
             }
         } else {
             int count = 1;
             if (start == 'r') {
                 while (count != num) {
-                    temp = temp.getNext();
+                    temp = temp.getNextDC();
                     count++;
                 }
             } else {
@@ -106,11 +106,11 @@ public class ListDECircular {
                     count++;
                 }
             }
-            if (temp.getData2().isDirty()) {
-                temp.getData2().setDirty(false);
+            if (temp.getDataDC().isDirty()) {
+                temp.getDataDC().setDirty(false);
             } else {
-                throw new ListDECircularExecpcion("nombre de la mascota: " + temp.getData2().getName() + " identificacion: " +
-                        temp.getData2().getIdentification() + " la mascota ya se encuentra bañada y libre de pulgas");
+                throw new ListDECircularExecpcion("nombre de la mascota: " + temp.getDataDC().getName() + " identificacion: " +
+                        temp.getDataDC().getIdentification() + " la mascota ya se encuentra bañada y libre de pulgas");
             }
         }
         return num;
@@ -123,20 +123,20 @@ public class ListDECircular {
         if (head == null) {
             throw new ListDECircularExecpcion("la lista se encuentra vacia por favor verifique.");
         }
-        NodeDE newNode = new NodeDE(pet);
+        NodeDC newNode = new NodeDC(pet);
         if (position == 1) {
             addPetStart(pet);
         } else {
-            NodeDE temp = head;
+            NodeDC temp = head;
             int count = 1;
 
             while (count < position) {
-                temp = temp.getNext();
+                temp = temp.getNextDC();
                 count++;
             }
             newNode.setPrev(temp.getPrev());
-            newNode.setNext(temp);
-            temp.getPrev().setNext(newNode);
+            newNode.setNextDC(temp);
+            temp.getPrev().setNextDC(newNode);
             temp.setPrev(newNode);
             size++;
         }
