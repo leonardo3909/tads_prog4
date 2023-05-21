@@ -8,12 +8,11 @@ import lombok.Data;
 public class Pet {
 
     private String codePet;
-    private String name;
-    private byte age;
     private char genderPet;
-    private String race;
-    private Location location;
-    private boolean dirty;
+    private int agePet;
+    private String namePet;
+    private Location locationPets;
+    private boolean bath;
 
 
 

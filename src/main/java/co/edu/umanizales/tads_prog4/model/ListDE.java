@@ -84,7 +84,7 @@ public class ListDE {
         if (this.head != null) {
             NodeDE temp = this.head;
             while (temp != null) {
-                if (temp.getData2().getLocation().getCode().equals(code)) {
+                if (temp.getData2().getLocationPets().getCode().equals(code)) {
                     count++;
                 }
                 temp = temp.getNextDE();
@@ -100,7 +100,7 @@ public class ListDE {
         if (this.head != null) {
             NodeDE temp = this.head;
             while (temp != null) {
-                if (temp.getData2().getLocation().getCode().equals(code)) {
+                if (temp.getData2().getLocationPets().getCode().equals(code)) {
                     count++;
                 }
                 temp = temp.getNextDE();
@@ -165,7 +165,7 @@ public class ListDE {
 
     public void deleteByAge(int age) throws ListDEExecpcion {
         NodeDE current = head;
-        while (current != null && current.getData2().getAge() != age) {
+        while (current != null && current.getData2().getAgePet() != age) {
             current = current.getNextDE();
         }
 
@@ -200,7 +200,7 @@ public class ListDE {
             int ages = 0;
             while (temp != null) {
                 count++;
-                ages += temp.getData2().getAge();
+                ages += temp.getData2().getAgePet();
                 temp = temp.getNextDE();
             }
             return (float) ages / count;
@@ -215,7 +215,7 @@ public class ListDE {
         NodeDE temp = this.head;
 
         while (temp != null){
-            if (temp.getData2().getName().charAt(0) != Character.toUpperCase(initial)){
+            if (temp.getData2().getNamePet().charAt(0) != Character.toUpperCase(initial)){
                 sendTop.addPets(temp.getData2());
             }
             else{

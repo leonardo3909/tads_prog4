@@ -58,17 +58,19 @@ public class ListDEController {
 
     }
 
-    @PostMapping(path = "addpets")
+    @PostMapping(path = "/addpets")
     public ResponseEntity<ResponseDTO> addPets(@RequestBody PetDTO petDTO){
         try {
-            Location location = locationService.getLocationByCode(petDTO.getCodeLocation());
+            Location location = locationService.getLocationByCode(petDTO.getCodeLocationPet());
             if(location == null){
                 return new ResponseEntity<>(new ResponseDTO(
                         404,"La ubicación no existe",
                         null), HttpStatus.OK);
             }
             listDEService.getPets().addPets(
-                    new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getRaze(),location,false));
+                    new Pet(petDTO.getIdentificationPet(),
+                            petDTO.getGenderPet(), petDTO.getAgePet(),
+                            petDTO.getNamePet(),location,false));
             return new ResponseEntity<>(new ResponseDTO(
                     200,"Se ha adicionado la mascota",
                     null), HttpStatus.OK);
@@ -79,36 +81,18 @@ public class ListDEController {
 
     }
 
-    @PostMapping(path = "addtostartpet")
-    public ResponseEntity<ResponseDTO> addToStartPet(@RequestBody PetDTO petDTO){
-        try {
-            Location location = locationService.getLocationByCode(petDTO.getCodeLocation());
-            if(location == null){
-                return new ResponseEntity<>(new ResponseDTO(
-                        404,"La ubicación no existe",
-                        null), HttpStatus.OK);
-            }
-            listDEService.getPets().addPets(
-                    new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getRaze(),location,false));
-            return new ResponseEntity<>(new ResponseDTO(
-                    200,"Se ha adicionado la mascota al principio",
-                    null), HttpStatus.OK);
-        }catch (ListDEExecpcion ExceptionDE){
-            return new ResponseEntity<>(new ResponseDTO(500,"no se pudo agregar a la lista la mascota",null),HttpStatus.INTERNAL_SERVER_ERROR);
-        }
 
 
-    }
 
     @GetMapping(path = "/petsbylocations/{code}")
     public ResponseEntity<ResponseDTO> getCountPetsByLocationCode(@PathVariable String code){
         try {
             listDEService.getPets().getCountPetsByLocationCode(code);
             List<PetsByLocationDTO> PetsByLocationDTOList = new ArrayList<>();
-            for(Location loc: locationService.getLocations()){
-                int count = listDEService.getPets().getCountPetsByLocationCode(loc.getCode());
+            for(Location location: locationService.getLocations()){
+                int count = listDEService.getPets().getCountPetsByLocationCode(location.getCode());
                 if(count>0){
-                    PetsByLocationDTOList.add(new PetsByLocationDTO(loc,count));
+                    PetsByLocationDTOList.add(new PetsByLocationDTO(location,count));
                 }
             }
             return new ResponseEntity<>(new ResponseDTO(

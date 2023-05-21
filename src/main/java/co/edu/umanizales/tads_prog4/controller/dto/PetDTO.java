@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class PetDTO {
 
-    private String identification;
-    private String name;
-    private byte age;
-    private char gender;
-    private String raze;
-    private String codeLocation;
+    private String identificationPet;
+    private String namePet;
+    private byte agePet;
+    private char genderPet;
+    private String codeLocationPet;
+    private boolean bath;
 }

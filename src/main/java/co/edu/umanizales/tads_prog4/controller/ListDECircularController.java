@@ -2,7 +2,7 @@ package co.edu.umanizales.tads_prog4.controller;
 
 import co.edu.umanizales.tads_prog4.controller.dto.PetDTO;
 import co.edu.umanizales.tads_prog4.controller.dto.ResponseDTO;
-import co.edu.umanizales.tads_prog4.execption.ListDECircularExecpcion;
+import co.edu.umanizales.tads_prog4.execption.ListDEExecpcion;
 import co.edu.umanizales.tads_prog4.model.Location;
 import co.edu.umanizales.tads_prog4.model.Pet;
 import co.edu.umanizales.tads_prog4.servive.ListDECircularService;
@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/listdecircular")
@@ -25,88 +27,107 @@ public class ListDECircularController {
     @GetMapping
     public ResponseEntity<ResponseDTO> getPet(){
         return new ResponseEntity<>(new ResponseDTO(
-                200,listDECircularService.getPets().getHead(),null), HttpStatus.OK);
+                200,listDECircularService.getPets().print(),null), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDTO> addPetCircular(@RequestBody PetDTO petDTO){
-        try {
-            Location location = locationService.getLocationByCode(petDTO.getCodeLocation());
-            if(location == null){
-                return new ResponseEntity<>(new ResponseDTO(
-                        404,"La ubicación no existe",
-                        null), HttpStatus.OK);
-            }
-            listDECircularService.getPets().addPetsCircular(
-                    new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getRaze(),location,true));
+    public ResponseEntity<ResponseDTO> addPetCircular(@RequestBody  PetDTO petDTO) {
+        Location locationPets = locationService.getLocationByCode(petDTO.getCodeLocationPet());
+        if (locationPets == null) {
             return new ResponseEntity<>(new ResponseDTO(
-                    200,"Se ha adicionado la mascota al final",
-                    null), HttpStatus.OK);
-        }catch (ListDECircularExecpcion deCircularExecpcion){
-            return new ResponseEntity<>(new ResponseDTO(500,"no se pudo agregar a la lista la mascota",null),HttpStatus.INTERNAL_SERVER_ERROR);
+                    404, "La ubicación no existe ", null), HttpStatus.OK);
+        } try {
+            listDECircularService.getPets().addPetListCircular(
+                    new Pet(petDTO.getIdentificationPet(),
+                            petDTO.getGenderPet(), petDTO.getAgePet(),
+                            petDTO.getNamePet(), locationPets,petDTO.isBath()));
+        } catch (ListDEExecpcion e) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    409, "Ya existe una mascota con ese código", null
+            ), HttpStatus.BAD_REQUEST);
         }
-
-
+        return new ResponseEntity<>(new ResponseDTO(
+                200, "Se ha añadido.", null), HttpStatus.OK);
     }
+    @GetMapping("/randomleftright/{side}")
+    public ResponseEntity<ResponseDTO> random(@PathVariable String side) {
+        List<Pet> pets = listDECircularService.getPets().print();
 
-    @PostMapping(path = "addpetstart")
-    public ResponseEntity<ResponseDTO> addPetStart(@RequestBody PetDTO petDTO){
-        try {
-            Location location = locationService.getLocationByCode(petDTO.getCodeLocation());
-            if(location == null){
-                return new ResponseEntity<>(new ResponseDTO(
-                        404,"La ubicación no existe",
-                        null), HttpStatus.OK);
-            }
-            listDECircularService.getPets().addPetsCircular(
-                    new Pet(petDTO.getIdentification(), petDTO.getName(), petDTO.getAge(), petDTO.getGender(), petDTO.getRaze(),location,true));
+        if (pets.isEmpty()) {
             return new ResponseEntity<>(new ResponseDTO(
-                    200,"Se ha adicionado la mascota",
+                    200, "No se encontraron mascotas",
                     null), HttpStatus.OK);
-        }catch (ListDECircularExecpcion deCircularExecpcion){
-            return new ResponseEntity<>(new ResponseDTO(500,"no se pudo agregar a la lista la mascota",null),HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-
-    }
-
-    @GetMapping(path = "/bathpets/{letter}" )
-    public ResponseEntity<ResponseDTO> bathPets(@PathVariable char letter)  {
-        int numero = 0;
-        char letterLower = Character.toLowerCase(letter);
-
-        try {
-            numero= listDECircularService.getPets().bathPets(letter);
-        } catch (ListDECircularExecpcion execpcion) {
-            return new ResponseEntity<>(new ResponseDTO(
-                    409,"no se pudo bañar a la mascota esta muy sucia.",
-                    null), HttpStatus.OK);
-        }
-        if (numero ==1 ){
-            return new ResponseEntity<>(new ResponseDTO(
-                    200, "Se ha bañado a la primera mascota ", null), HttpStatus.OK);
         } else {
-            if (letterLower=='r'){
+            int randomPosition = listDECircularService.getPets().bathPet(side);
+            if (randomPosition == -1) {
                 return new ResponseEntity<>(new ResponseDTO(
-                        200, "Se ha bañado la mascota #: " + numero +" iniciando de la cabeza a la derecha" , null), HttpStatus.OK);
-            }
-            else {
+                        200, "No se pudo bañar ningún perro",
+                        null), HttpStatus.OK);
+            } else if (randomPosition == 0) {
                 return new ResponseEntity<>(new ResponseDTO(
-                        200, "Se ha bañado la mascota #:" + numero +" iniciando de la cabeza a la izquierda " , null), HttpStatus.OK);
+                        200, "El perro ya fue bañado en esa dirección" + randomPosition,
+                        null), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new ResponseDTO(
+                        200, "Se ha bañado el perro número " + randomPosition + " en la dirección " + side,
+                        null), HttpStatus.OK);
             }
-
         }
     }
 
-    @PostMapping(path = "/addposition/{position}")
-    public ResponseEntity<ResponseDTO> addPosition(@RequestBody Pet pet, @PathVariable int position)  {
+    @PostMapping(path = "/addtostart")
+    public ResponseEntity<ResponseDTO> addPetToStart(@RequestBody PetDTO petDTO) {
         try {
-            listDECircularService.getPets().addPosition(position,pet);
-        } catch (ListDECircularExecpcion execpcion) {
-            return new ResponseEntity<>(new ResponseDTO(409, "no se pudo adicionar la mascota en la posicion deseada", null), HttpStatus.OK);
+            Location locationPets = locationService.getLocationByCode(petDTO.getCodeLocationPet());
+            if (locationPets == null) {
+                return new ResponseEntity<>(new ResponseDTO(
+                        404, "La ubicación no existe",
+                        null), HttpStatus.OK);
+            }
+            listDECircularService.getPets().addPetToStart(
+                    new Pet(petDTO.getIdentificationPet(),
+                            petDTO.getGenderPet(), petDTO.getAgePet(),
+                            petDTO.getNamePet(), locationPets, petDTO.isBath()));
+            return new ResponseEntity<>(new ResponseDTO(200, "Mascota adicionada al inicio", null),
+                    HttpStatus.OK);
+        } catch (ListDEExecpcion e) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    409, e.getMessage(),
+                    null), HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ResponseDTO(200, "la mascota fue adicionada en la posicion deseada  "+position , null),
-                HttpStatus.OK);
-
     }
+
+    @PostMapping(path = "/addtofinal")
+    public ResponseEntity<ResponseDTO> addPetToFinal(@RequestBody  PetDTO petDTO) {
+        try {
+            Location locationPets = locationService.getLocationByCode(petDTO.getCodeLocationPet());
+            if (locationPets == null) {
+                return new ResponseEntity<>(new ResponseDTO(
+                        404, "La ubicación no existe",
+                        null), HttpStatus.OK);
+            }
+            listDECircularService.getPets().addPetToEnd(
+                    new Pet(petDTO.getIdentificationPet(),
+                            petDTO.getGenderPet(), petDTO.getAgePet(),
+                            petDTO.getNamePet(), locationPets, petDTO.isBath()));
+            return new ResponseEntity<>(new ResponseDTO(200, "Mascota adicionada al final", null),
+                    HttpStatus.OK);
+        } catch (ListDEExecpcion e) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    409, e.getMessage(),
+                    null), HttpStatus.OK);
+        }
+    }
+
+    @PostMapping(path = "/addpetposition/{position}")
+    public ResponseEntity<ResponseDTO> addPetInPosition(@RequestBody Pet pet, @PathVariable int position) {
+        try {
+            listDECircularService.getPets().addPetInPosition(position, pet);
+            return new ResponseEntity<>(new ResponseDTO(200, "Mascota adicionada en la posición " + position, null),
+                    HttpStatus.OK);
+        } catch (ListDEExecpcion e) {
+            return new ResponseEntity<>(new ResponseDTO(500, "Ocurrió un error al añadir por posición en la lista", null), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

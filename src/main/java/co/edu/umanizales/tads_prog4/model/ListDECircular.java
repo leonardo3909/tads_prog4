@@ -1,6 +1,5 @@
 package co.edu.umanizales.tads_prog4.model;
 
-import co.edu.umanizales.tads_prog4.execption.ListDECircularExecpcion;
 import co.edu.umanizales.tads_prog4.execption.ListDEExecpcion;
 import lombok.Data;
 
@@ -16,17 +15,17 @@ public class ListDECircular {
     private List<Pet> petsCircular = new ArrayList<>();
 
 
-    public void addPetListCircular(Pet pet) throws ListDECircularExecpcion {
+    public void addPetListCircular(Pet pet) throws ListDEExecpcion {
         if (this.head != null) {
             NodeDE temp = this.head;
             while (temp.getNextDE() != this.head) {
                 if (temp.getData2().getCodePet().equals(pet.getCodePet())) {
-                    throw new ListDECircularExecpcion("la mascota y existe en la lista");
+                    throw new ListDEExecpcion("la mascota y existe en la lista");
                 }
                 temp = temp.getNextDE();
             }
             if (temp.getData2().getCodePet().equals(pet.getCodePet())) {
-                throw new ListDECircularExecpcion("la mascota ya existe en la lista");
+                throw new ListDEExecpcion("la mascota ya existe en la lista");
             }
             NodeDE newPet = new NodeDE(pet);
             temp.setNextDE(newPet);
@@ -41,97 +40,113 @@ public class ListDECircular {
         size++;
     }
 
-   public void addPetStart(Pet pet) throws ListDECircularExecpcion{
-       NodeDC newPet = new NodeDC(pet);
-       if (this.head != null){
-           NodeDC temp = this.head;
-           while (temp.getNextDC() != this.head){
-               temp = temp.getNextDC();
-           }
-           temp.setNextDC(newPet);
-           newPet.setPrev(newPet);
-           newPet.setNextDC(head);
-           head.setPrev(newPet);
-           this.head = newPet;
-       }
-       else{
-           newPet.setNextDC(newPet);
-           newPet.setPrev(newPet);
-           this.head = newPet;
-           throw new ListDECircularExecpcion("no se pudo adicionar la mascota al final");
-       }
-       size++;
-   }
 
-    public int bathPets(char letter) throws ListDECircularExecpcion {
-        char start = Character.toLowerCase(letter);
-        NodeDC temp = head;
-
-        if (temp == null) {
-            throw new ListDECircularExecpcion(" No se encontraron mascotas para bañar");
+    public int bathPet(String side) {
+        if (head == null) {
+            return -1;
         }
-
-        if (start != 'r' && start != 'l') {
-            throw new ListDECircularExecpcion(" no ha ingresado lo siguente por favor intentelo de nuevo: R (right) o L (left)");
+        int size = getSize();
+        Random random = new Random();
+        int randomPosition = random.nextInt(size) + 1;
+        NodeDE temp = head;
+        int cont = 1;
+        if (side.equals("L")) {
+            temp = head.getPrev();
         }
-
-        Random rand = new Random();
-        int num = rand.nextInt(size) + 1;
-
-        if (num == 1) {
-            if (temp.getDataDC().isDirty()) {
-                temp.getDataDC().setDirty(false);
-            } else {
-                throw new ListDECircularExecpcion("nombre de la mascota: " + temp.getDataDC().getName() + " y de id " +
-                        temp.getDataDC().getCodePet() + " la mascota ya se encuentra bañada y libre de pulgas ");
+        while (cont < randomPosition) {
+            if (side.equals("R")) {
+                temp = temp.getNextDE();
+            } else if (side.equals("L")) {
+                temp = temp.getPrev();
             }
+            cont++;
+        }
+        if (side.equals("L")) {
+            temp = temp.getNextDE();
+        }
+        Pet pet = temp.getData2();
+        if (!pet.isBath()) {
+            pet.setBath(true);
+            return randomPosition;
         } else {
-            int count = 1;
-            if (start == 'r') {
-                while (count != num) {
-                    temp = temp.getNextDC();
-                    count++;
-                }
-            } else {
-                while (count != num) {
-                    temp = temp.getPrev();
-                    count++;
-                }
-            }
-            if (temp.getDataDC().isDirty()) {
-                temp.getDataDC().setDirty(false);
-            } else {
-                throw new ListDECircularExecpcion("nombre de la mascota: " + temp.getDataDC().getName() + " identificacion: " +
-                        temp.getDataDC().getCodePet() + " la mascota ya se encuentra bañada y libre de pulgas");
-            }
+            return 0;
         }
-        return num;
     }
 
-    public void addPosition(int position, Pet pet) throws ListDECircularExecpcion {
-        if (size < position) {
-            throw new ListDECircularExecpcion("la posicion que ingresastes es mas grande que la lista.");
-        }
+    public void addPetToStart(Pet pet) throws ListDEExecpcion {
         if (head == null) {
-            throw new ListDECircularExecpcion("la lista se encuentra vacia por favor verifique.");
-        }
-        NodeDC newNode = new NodeDC(pet);
-        if (position == 1) {
-            addPetStart(pet);
+            addPetListCircular(pet);
         } else {
-            NodeDC temp = head;
-            int count = 1;
-
-            while (count < position) {
-                temp = temp.getNextDC();
-                count++;
+            NodeDE newNode = new NodeDE(pet);
+            NodeDE temp = head.getPrev();
+            if (temp == null) {
+                throw new ListDEExecpcion("El nodo anterior de la cabeza es nulo.");
             }
-            newNode.setPrev(temp.getPrev());
-            newNode.setNextDC(temp);
-            temp.getPrev().setNextDC(newNode);
-            temp.setPrev(newNode);
+            temp.setNextDE(newNode);
+            newNode.setPrev(temp);
+            newNode.setNextDE(head);
+            head.setPrev(newNode);
+            head = newNode;
             size++;
         }
+    }
+
+    public void addPetToEnd(Pet pet) throws ListDEExecpcion {
+        if (head == null) {
+            addPetListCircular(pet);
+        } else {
+            NodeDE newNode = new NodeDE(pet);
+            NodeDE temp = head.getPrev();
+            if (temp == null) {
+                throw new ListDEExecpcion("El nodo anterior de la cabeza es nulo.");
+            }
+            temp.setNextDE(newNode);
+            newNode.setPrev(temp);
+            newNode.setNextDE(head);
+            head.setPrev(newNode);
+            size++;
+        }
+    }
+
+
+    public void addPetInPosition(int position, Pet pet) throws ListDEExecpcion {
+        if (size < position) {
+            throw new ListDEExecpcion("la posicion que ingreso es mas grande que la lista.");
+        }
+
+        if (head != null) {
+            if (position == 1) {
+                addPetToStart(pet);
+            } else {
+                NodeDE temp = head;
+                int count = 1;
+                while (temp != null && count < position - 1) {
+                    temp = temp.getNextDE();
+                    count++;
+                }
+                if (temp != null) {
+                    NodeDE newNode = new NodeDE(pet);
+                    newNode.setNextDE(temp.getNextDE());
+                    newNode.setPrev(temp);
+                    if (temp.getNextDE() != null) {
+                        temp.getNextDE().setPrev(newNode);
+                    }
+                    temp.setNextDE(newNode);
+                }
+            }
+        }
+    }
+
+    public List<Pet> print() {
+        List<Pet> pets = new ArrayList<>();
+        if (head != null) {
+            NodeDE temp = head;
+            do {
+                pets.add(temp.getData2());
+                temp = temp.getNextDE();
+            } while (temp != head);
+        }
+        return pets;
     }
 
 }
