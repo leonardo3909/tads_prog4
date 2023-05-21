@@ -20,13 +20,13 @@ public class ListDE {
             NodeDE temp = head;
             while(temp.getNextDE() !=null)
             {
-                if (temp.getData2().getIdentification().equals(pet.getIdentification())){
+                if (temp.getData2().getCodePet().equals(pet.getCodePet())){
                     throw new ListDEExecpcion("ya existe en la lista esta mascota");
                 }
                 temp = temp.getNextDE();
 
             }
-            if (temp.getData2().getIdentification().equals(pet.getIdentification())){
+            if (temp.getData2().getCodePet().equals(pet.getCodePet())){
                 throw new ListDEExecpcion("ya existe en la lista mascota");
             }
             /// Parado en el último
@@ -229,24 +229,31 @@ public class ListDE {
     }
 
 
-    public void deleteById(String id) {
-        NodeDE current = head;
-        while (current != null) {
-            if (current.getData2().getIdentification().equals(id)) {
-                if (current == head) { // si el nodo es la cabeza
-                    head = current.getNextDE();
-                    if (head != null) {
-                        head.setPrev(null);
-                    }
-                } else if (current.getNextDE() == null) { // si el nodo es cola
-                    current.getPrev().setNextDE(null);
-                } else { // si el nodo está en el medio
-                    current.getPrev().setNextDE(current.getNextDE());
-                    current.getNextDE().setPrev(current.getPrev());
+    public void deletePetByIdentification(String code) throws ListDEExecpcion {
+        if (this.head != null) {
+            if (this.head.getData2().getCodePet().equals(code)) {
+                this.head = this.head.getNextDE();
+                if (this.head != null) {
+                    this.head.setPrev(null);
                 }
-                break;
             }
-            current = current.getNextDE();
+            else {
+                NodeDE temp = this.head;
+                while (temp != null) {
+                    if (temp.getData2().getCodePet().equals(code)) {
+                        temp.getPrev().setNextDE(temp.getNextDE());
+                        if (temp.getNextDE() != null) {
+                            temp.getNextDE().setPrev(temp.getPrev());
+                        }
+                        return;
+                    }
+                    temp = temp.getNextDE();
+                }
+                throw new ListDEExecpcion("El código " + code + " no existe en la lista");
+            }
+        }
+        else {
+            throw new ListDEExecpcion("No hay datos en la lista");
         }
     }
 

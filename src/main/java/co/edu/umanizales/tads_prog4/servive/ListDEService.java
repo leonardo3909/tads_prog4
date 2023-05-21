@@ -16,8 +16,8 @@ public class ListDEService {
         pets = new ListDE();
     }
 
-    public void invertPets() throws ListDEExecpcion {
-        pets.invertPets();
+    public void deletePetByIdentification(String code) throws ListDEExecpcion {
+        pets.deletePetByIdentification(code);
     }
 
 }

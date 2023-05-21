@@ -187,10 +187,17 @@ public class ListDEController {
 
     }
 
-    @GetMapping(path = "deletebyid/{id}")
-    public ResponseEntity<ResponseDTO>deleteById(@PathVariable String id){
-        listDEService.getPets().deleteById(id);
-        return new ResponseEntity<>(new ResponseDTO(200, "La mascota con esa identificacion han sido eliminada",
-                null), HttpStatus.OK);
+    @GetMapping(path = "/deletepet/{code}")
+    public ResponseEntity<ResponseDTO> deletePetByIdentification(@PathVariable String code)  {
+        try {
+            listDEService.deletePetByIdentification(code);
+            return new ResponseEntity<>(new ResponseDTO(
+                    200, "Las mascotas con el código idicado han sido eliminado.",
+                    null), HttpStatus.OK);
+        } catch (ListDEExecpcion e) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    500, "Error al eliminar las mascotas.",
+                    null), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
