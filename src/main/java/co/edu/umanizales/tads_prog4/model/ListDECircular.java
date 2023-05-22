@@ -107,11 +107,9 @@ public class ListDECircular {
             size++;
         }
     }
-
-
     public void addPetInPosition(int position, Pet pet) throws ListDEExecpcion {
         if (size < position) {
-            throw new ListDEExecpcion("la posicion que ingreso es mas grande que la lista.");
+            throw new ListDEExecpcion("Se ingresó una posición más grande que la lista.");
         }
 
         if (head != null) {

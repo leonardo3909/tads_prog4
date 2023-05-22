@@ -129,5 +129,4 @@ public class ListDECircularController {
             return new ResponseEntity<>(new ResponseDTO(500, "Ocurrió un error al añadir por posición en la lista", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
