@@ -257,6 +257,76 @@ public class ListDE {
         }
     }
 
+    public void orderPetsToStart() throws ListDEExecpcion {
+        if (this.head != null) {
+            ListDE listCP = new ListDE();
+            NodeDE temp = this.head;
+            while (temp != null) {
+                if (temp.getData2().getGenderPet() == 'M') {
+                    listCP.addToStartPet(temp.getData2());
+                } else {
+                    listCP.addPets(temp.getData2());
+                }
+                temp = temp.getNextDE();
+            }
+            this.head = listCP.getHead();
+        }
+        else{
+            throw new ListDEExecpcion("La lista está vacía");
+        }
+    }
+
+
+    public void addPetInPosition(int position, Pet pet) throws ListDEExecpcion {
+        if (size < position) {
+            throw new ListDEExecpcion("Se ingresó una posición más grande que la lista.");
+        }
+
+        if (head != null) {
+            if (position == 1) {
+                addToStartPet(pet);
+            } else {
+                NodeDE temp = head;
+                int count = 1;
+                while (temp != null && count < position - 1) {
+                    temp = temp.getNextDE();
+                    count++;
+                }
+                if (temp != null) {
+                    NodeDE newNode = new NodeDE(pet);
+                    newNode.setNextDE(temp.getNextDE());
+                    newNode.setPrev(temp);
+                    if (temp.getNextDE() != null) {
+                        temp.getNextDE().setPrev(newNode);
+                    }
+                    temp.setNextDE(newNode);
+                }
+            }
+        }
+    }
+
+    public void passPetPosition(String codePet, int position, ListDE listDE) throws ListDEExecpcion{
+        NodeDE temp = this.head;
+        int count = 1;
+        while (temp != null && !temp.getData2().getCodePet().equals(codePet)) {
+            temp = temp.getNextDE();
+            count++;
+        }
+        if (temp != null) {
+            int difference = count - position;
+            Pet pet = temp.getData2();
+            listDE.deletePetByIdentification(temp.getData2().getCodePet());
+            if (difference > 0) {
+                listDE.addPetInPosition(difference, pet);
+            } else {
+                listDE.addToStartPet(pet);
+            }
+        } else {
+            throw new ListDEExecpcion("No se encontró ningún niño con la identificación especificada.");
+        }
+    }
+
+
     public List<Pet> toList(){
         List<Pet> listPets= new ArrayList<>();
         NodeDE temp = head;

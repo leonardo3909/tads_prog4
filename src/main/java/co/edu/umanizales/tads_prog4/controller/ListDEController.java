@@ -184,4 +184,28 @@ public class ListDEController {
                     null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping(path = "/passpositions/{codepet}/{move}")
+    public ResponseEntity<ResponseDTO> passPetPosition(@PathVariable  String codepet,  @PathVariable int move ) {
+        try {
+            listDEService.getPets().passPetPosition(codepet,move, listDEService.getPets());
+            return new ResponseEntity<>(new ResponseDTO(200, "La mascota se ha adelantado de posición", null), HttpStatus.OK);
+        } catch (ListDEExecpcion e) {
+            return new ResponseEntity<>(new ResponseDTO(500, "Ha ocurrido un error al adelantar la posición de la mascota", null), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/orderpetsmaletostart")
+    public ResponseEntity<ResponseDTO> orderPetsMaleToStart() {
+        try {
+            listDEService.getPets().orderPetsToStart();
+            return new ResponseEntity<>(new ResponseDTO(
+                    200, "Se han añadido las mascotas masculinas al inicio, las femeninas al final.",
+                    null), HttpStatus.OK);
+        } catch (ListDEExecpcion e) {
+            return new ResponseEntity<>(new ResponseDTO(
+                    500, "Ocurrió un error al ordenar el género de las mascotas.", null),
+                    HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
