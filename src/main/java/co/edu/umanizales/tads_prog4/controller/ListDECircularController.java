@@ -40,7 +40,7 @@ public class ListDECircularController {
             listDECircularService.getPets().addPetListCircular(
                     new Pet(petDTO.getIdentificationPet(),
                             petDTO.getGenderPet(), petDTO.getAgePet(),
-                            petDTO.getNamePet(), locationPets,petDTO.isBath()));
+                            petDTO.getNamePet(), locationPets,petDTO.isBath(), petDTO.getNumberOfTicks()));
         } catch (ListDEExecpcion e) {
             return new ResponseEntity<>(new ResponseDTO(
                     409, "Ya existe una mascota con ese código", null
@@ -87,7 +87,7 @@ public class ListDECircularController {
             listDECircularService.getPets().addPetToStart(
                     new Pet(petDTO.getIdentificationPet(),
                             petDTO.getGenderPet(), petDTO.getAgePet(),
-                            petDTO.getNamePet(), locationPets, petDTO.isBath()));
+                            petDTO.getNamePet(), locationPets, petDTO.isBath(), petDTO.getNumberOfTicks()));
             return new ResponseEntity<>(new ResponseDTO(200, "Mascota adicionada al inicio", null),
                     HttpStatus.OK);
         } catch (ListDEExecpcion e) {
