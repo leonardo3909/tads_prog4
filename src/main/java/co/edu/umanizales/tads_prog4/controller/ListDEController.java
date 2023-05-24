@@ -191,9 +191,10 @@ public class ListDEController {
             listDEService.getPets().passPetPosition(codepet,move, listDEService.getPets());
             return new ResponseEntity<>(new ResponseDTO(200, "La mascota se ha adelantado de posición", null), HttpStatus.OK);
         } catch (ListDEExecpcion e) {
-            return new ResponseEntity<>(new ResponseDTO(500, "Ha ocurrido un error al adelantar la posición de la mascota", null), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(new ResponseDTO(500, "el numero de posiciones indicadas a adelantar es mas grande que la lista", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 
     @GetMapping("/orderpetsmaletostart")
     public ResponseEntity<ResponseDTO> orderPetsMaleToStart() {

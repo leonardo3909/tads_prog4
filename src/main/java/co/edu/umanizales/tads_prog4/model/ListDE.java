@@ -4,6 +4,7 @@ import co.edu.umanizales.tads_prog4.execption.ListDEExecpcion;
 import co.edu.umanizales.tads_prog4.execption.ListSEExecption;
 import lombok.Data;
 
+import javax.lang.model.util.SimpleTypeVisitor14;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -314,16 +315,18 @@ public class ListDE {
         }
         if (temp != null) {
             int difference = count - position;
-            Pet pet = temp.getData2();
-            listDE.deletePetByIdentification(temp.getData2().getCodePet());
-            if (difference > 0) {
-                listDE.addPetInPosition(difference, pet);
-            } else {
-                listDE.addToStartPet(pet);
+            if (difference <= 0) {
+                throw new ListDEExecpcion("No se puede adelantar la posición.");
             }
+            Pet pet1 = temp.getData2();
+            listDE.deletePetByIdentification(temp.getData2().getCodePet());
+            listDE.addPetInPosition(difference, pet1);
         } else {
-            throw new ListDEExecpcion("No se encontró ningún niño con la identificación especificada.");
+            throw new ListDEExecpcion("No se encontró ningúna mascota con la identificación especificada.");
         }
+
+
+
     }
 
 
