@@ -135,6 +135,28 @@ public class ListDECircular {
         }
     }
 
+    public void bathingPetsWithTicks(String codePet)throws ListDEExecpcion {
+        if (head == null){
+            bathPet(codePet);
+        }
+            NodeDE temp = head;
+            boolean encontrado = false;
+        do {
+            if (temp.getData2().getCodePet().equals(codePet)) {
+                encontrado = true;
+                break;
+            }
+            temp = temp.getNextDE();
+        }while (temp != head);
+        if (encontrado){
+            if (temp == head && temp.getNextDE() == head){
+                head = null;
+            }else {
+
+            }
+        }
+    }
+
     public List<Pet> print() {
         List<Pet> pets = new ArrayList<>();
         if (head != null) {

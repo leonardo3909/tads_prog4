@@ -13,6 +13,7 @@ public class Pet {
     private String namePet;
     private Location locationPets;
     private boolean bath;
+    private byte numberOfTicks;
 
 
 

@@ -11,4 +11,5 @@ public class PetDTO {
     private char genderPet;
     private String codeLocationPet;
     private boolean bath;
+    private byte numberOfTicks;
 }

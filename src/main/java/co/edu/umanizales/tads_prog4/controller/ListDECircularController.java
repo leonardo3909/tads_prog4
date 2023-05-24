@@ -109,7 +109,7 @@ public class ListDECircularController {
             listDECircularService.getPets().addPetToEnd(
                     new Pet(petDTO.getIdentificationPet(),
                             petDTO.getGenderPet(), petDTO.getAgePet(),
-                            petDTO.getNamePet(), locationPets, petDTO.isBath()));
+                            petDTO.getNamePet(), locationPets, petDTO.isBath(), petDTO.getNumberOfTicks()));
             return new ResponseEntity<>(new ResponseDTO(200, "Mascota adicionada al final", null),
                     HttpStatus.OK);
         } catch (ListDEExecpcion e) {
